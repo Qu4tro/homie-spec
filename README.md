@@ -18,7 +18,6 @@ Another package (WIP), will bridge the MQTT protocol and `homie-spec`.
 Relevant external links:
   - [Documentation](https://qu4tro.github.io/homie-spec/)
   - [Specification](https://homieiot.github.io/specification/spec-core-v4_0_0/#)
-  - [PyPi](https://pypi.org/project/homie-spec/)
 
 ## Installation
 
