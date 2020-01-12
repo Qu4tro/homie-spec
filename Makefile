@@ -27,6 +27,8 @@ types mypy:
 
 docs pdoc:
 	poetry run pdoc --force --config show_type_annotations=True --html --output-dir docs $$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')
+	mv docs/$$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')/* docs
+	rmdir docs/$$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')
 
 clean:
 	rm -rf __pycache__ */__pycache__ *.egg-info .coverage
