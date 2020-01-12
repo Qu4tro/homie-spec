@@ -1,4 +1,4 @@
-.PHONY: all test tests cov-report tests-all style black lint types docs tox mypy pdoc pylint clean test-watch tests-watch watch ptw travis travis-lint
+.PHONY: all test tests cov-report tests-all style black lint types docs tox mypy pdoc pylint clean test-watch tests-watch watch ptw travis travis-lint pdocs type
 
 
 test tests .coverage:
@@ -22,10 +22,10 @@ lint pylint:
 travis travis-lint:
 	cat .travis.yml | docker run tianon/travis-cli lint -
 
-types mypy:
+type types mypy:
 	poetry run mypy .
 
-docs pdoc:
+docs pdoc pdocs:
 	poetry run pdoc --force --config show_type_annotations=True --html --output-dir docs $$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')
 	mv docs/$$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')/* docs
 	rmdir docs/$$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')
