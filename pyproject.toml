@@ -33,10 +33,13 @@ isolated_build = true
 envlist = py36,py37,py38
  
 [testenv]
+passenv = TOXENV CI TRAVIS TRAVIS_* CODECOV_*
 whitelist_externals = poetry
+deps = codecov>=1.4.0
 commands =
   poetry install -v
   poetry run pytest --mypy --pylint --black --doctest-modules --cov=homie_spec {posargs}
+  codecov -e TOXENV
 """
 
 [tool.coverage.run]
