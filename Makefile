@@ -31,4 +31,4 @@ docs pdoc pdocs:
 	rmdir docs/$$(poetry version | cut -f1 -d' ' | sed 's/-/_/g')
 
 clean:
-	rm -rf __pycache__ */__pycache__ *.egg-info .coverage
+	rm -rf __pycache__ */__pycache__ *.egg-info .coverage .hypothesis .mypy_cache .tox .pytest_cache
