@@ -1,4 +1,7 @@
 # homie-spec
+
+[![Build Status](https://travis-ci.com/Qu4tro/homie-spec.svg?branch=master)](https://travis-ci.com/Qu4tro/homie-spec)
+
 homie-spec is a Python library that handles the v4 [Homie Convention](https://homieiot.github.io/).
 
 This package has no dependencies other than **Python >=3.6**. Since it doesn't implement MQTT this also means it's fairly useless on it's own, as it has no ability to interact with any MQTT broker on it's own.
