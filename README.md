@@ -9,6 +9,8 @@ This package has no dependencies other than **Python >=3.6**. Since it doesn't i
 The goal of this package is to provide a data-driven library to easily create `devices`, `nodes` and `properties`. These can also be published to be used by anyone.
 Another package (WIP), will bridge the MQTT protocol and `homie-spec`.
 
+The documentation can be found at https://qu4tro.github.io/homie-spec/ and the spec that it implements at https://homieiot.github.io/specification/spec-core-v4_0_0/#
+
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install `homie-spec`.
