@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>homie_spec.validation API documentation</title>
+<meta name="description" content="Exposes the Valid class" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>homie_spec.validation</code></h1>
+</header>
+<section id="section-intro">
+<p>Exposes the Valid class</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;Exposes the Valid class&#34;
+
+import re
+from string import ascii_lowercase
+
+
+class Valid:
+    &#34;Set of functions that validate the different parts of the Homie Convention&#34;
+
+    @classmethod
+    def topic(cls, topic: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        An MQTT topic consists of one or more topic levels,
+        separated by the slash character (/).
+        &#34;&#34;&#34;
+        raise NotImplementedError
+
+    @staticmethod
+    def topic_id(topic_id: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        A topic level ID MAY contain lowercase letters from a to z,
+        numbers from 0 to 9 as well as the hyphen character (-).
+
+        A topic level ID MUST NOT start or end with a hyphen (-).
+        The special character $ is used and reserved for Homie attributes.
+        &#34;&#34;&#34;
+        return topic_id[0] != &#34;-&#34; and all(
+            c == &#34;-&#34; or c in ascii_lowercase for c in topic_id
+        )
+
+    @staticmethod
+    def payload(payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Every MQTT message payload MUST be sent as a UTF-8 encoded string.
+
+        The value published as payload MUST be valid for the
+        respective property/attribute type as per the list below.
+        &#34;&#34;&#34;
+        # TODO: Change payload to bytes  # pylint: disable=fixme
+        return isinstance(payload, str)
+
+    @classmethod
+    def string(cls, string_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        String types are limited to 268,435,456 characters
+        An empty string (&#34;&#34;) is a valid payload
+        &#34;&#34;&#34;
+        return cls.payload(string_payload) and len(string_payload) &lt; 2 ** 28
+
+    @classmethod
+    def integer(cls, integer_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Integer types are UTF-8 encoded string literal
+        representations of 64-bit signed whole numbers.
+
+        Integers range from -9,223,372,036,854,775,808 (-2^63)
+        to 9,223,372,036,854,775,807 (263-1).
+
+        The payload may only contain whole numbers and the negation
+        character `-`. No other characters including spaces (` `) are permitted.
+
+        A string with just a negation sign (`-`) is not a valid payload.
+
+        An empty string (``) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(integer_payload):
+            return False
+
+        if not cls.payload(integer_payload):
+            return False
+
+        integer_match = r&#34;^-?(\d+)&#34;
+        if re.match(integer_match, integer_payload) is None:
+            return False
+
+        number = int(integer_payload)
+        if number &lt; -(2 ** 63) or number &gt; 2 ** 63:
+            return False
+
+        return True
+
+    @classmethod
+    def float(cls, float_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Float types are UTF-8 encoded string literal representations
+        of 64-bit signed floating point numbers.
+
+        Floats range from  2^(-1074) to (2-(2^-52))*2^1023.
+        The payload may only contain whole numbers, the negation character “-&#34;,
+        the exponent character “e” or “E” and the decimal separator “.&#34;,
+        no other characters, including spaces (” “) are permitted
+
+        The dot character (&#34;.&#34;) is the decimal separator (used if necessary)
+        and may only have a single instance present in the payload.
+
+        Representations of numeric concepts such as “NaN” (Not a Number)
+        and “Infinity” are not a valid payload.
+
+        A string with just a negation sign (&#34;-&#34;) is not a valid payload
+        An empty string (&#34;&#34;) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(float_payload):
+            return False
+
+        if not cls.payload(float_payload):
+            return False
+
+        float_match = r&#34;^-?(\d+)(.\d+)?([eE]\d+)?$&#34;
+        if re.match(float_match, float_payload) is None:
+            return False
+
+        return True
+
+    @classmethod
+    def boolean(cls, boolean_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Booleans must be converted
+        to the string literals &#34;true&#34; or &#34;false&#34;.
+
+        Representation is case sensitive, e.g. &#34;TRUE&#34; or &#34;FALSE&#34; are not valid payloads.
+
+        An empty string (&#34;&#34;) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(boolean_payload):
+            return False
+
+        if not cls.payload(boolean_payload):
+            return False
+
+        if boolean_payload != &#34;true&#34; or boolean_payload != &#34;false&#34;:
+            return False
+
+        return True
+
+    @classmethod
+    def enum(cls, enum_payload: str, format_of: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Enum payloads must be one of the values specified
+        in the format definition of the property.
+
+        Enum payloads are case sensitive, e.g. &#34;Car&#34; will
+        not match a format definition of &#34;car&#34;.
+
+        Payloads should have leading and trailing whitespace removed.
+        An empty string (&#34;&#34;) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(enum_payload) or not bool(format_of):
+            return False
+
+        if not cls.payload(enum_payload):
+            return False
+
+        if enum_payload not in format_of.split(&#34;,&#34;):
+            return False
+
+        if enum_payload != enum_payload.strip():
+            return False
+
+        return True
+
+    @classmethod
+    def color(cls, color_payload: str, format_of: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Color payload validity varies depending on the
+        property format definition of either &#34;rgb&#34; or &#34;hsv&#34;.
+
+        Both payload types contain comma separated
+        whole numbers of differing restricted ranges.
+
+        The encoded string may only contain whole numbers and
+        the comma character &#34;,&#34;, no other characters are permitted,
+        including spaces (&#34; &#34;).
+
+        Payloads for type &#34;rgb&#34; contains 3 comma separated values
+        of numbers with a valid range between 0 and 255. e.g. 100,100,100 .
+
+        Payloads for type &#34;hsv&#34; contains 3 comma separated values of numbers.
+        The first number has a range of 0 to 360,
+        the second and third numbers have a range of 0 to 100. e.g. 300,50,75.
+
+        An empty string (&#34;&#34;) is not a valid payload
+        &#34;&#34;&#34;
+        if (
+            not bool(color_payload)
+            or not bool(format_of)
+            or not cls.payload(color_payload)
+        ):
+            return False
+
+        color_match = r&#34;(\d+),(\d+),(\d+)&#34;
+        match = re.match(color_match, color_payload)
+        if match is None:
+            return False
+
+        values = [int(c) for c in match.groups()]
+        if format_of == &#34;rgb&#34;:
+            if any(v &lt; 0 or v &gt; 255 for v in values):
+                return False
+
+        elif format_of == &#34;hsv&#34;:
+            if values[0] &lt; 0 or values[0] &gt; 360 or any(v &lt; 0 or v &gt; 100 for v in values):
+                return False
+
+        else:
+            return False
+
+        return True</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="homie_spec.validation.Valid"><code class="flex name class">
+<span>class <span class="ident">Valid</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set of functions that validate the different parts of the Homie Convention</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Valid:
+    &#34;Set of functions that validate the different parts of the Homie Convention&#34;
+
+    @classmethod
+    def topic(cls, topic: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        An MQTT topic consists of one or more topic levels,
+        separated by the slash character (/).
+        &#34;&#34;&#34;
+        raise NotImplementedError
+
+    @staticmethod
+    def topic_id(topic_id: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        A topic level ID MAY contain lowercase letters from a to z,
+        numbers from 0 to 9 as well as the hyphen character (-).
+
+        A topic level ID MUST NOT start or end with a hyphen (-).
+        The special character $ is used and reserved for Homie attributes.
+        &#34;&#34;&#34;
+        return topic_id[0] != &#34;-&#34; and all(
+            c == &#34;-&#34; or c in ascii_lowercase for c in topic_id
+        )
+
+    @staticmethod
+    def payload(payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Every MQTT message payload MUST be sent as a UTF-8 encoded string.
+
+        The value published as payload MUST be valid for the
+        respective property/attribute type as per the list below.
+        &#34;&#34;&#34;
+        # TODO: Change payload to bytes  # pylint: disable=fixme
+        return isinstance(payload, str)
+
+    @classmethod
+    def string(cls, string_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        String types are limited to 268,435,456 characters
+        An empty string (&#34;&#34;) is a valid payload
+        &#34;&#34;&#34;
+        return cls.payload(string_payload) and len(string_payload) &lt; 2 ** 28
+
+    @classmethod
+    def integer(cls, integer_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Integer types are UTF-8 encoded string literal
+        representations of 64-bit signed whole numbers.
+
+        Integers range from -9,223,372,036,854,775,808 (-2^63)
+        to 9,223,372,036,854,775,807 (263-1).
+
+        The payload may only contain whole numbers and the negation
+        character `-`. No other characters including spaces (` `) are permitted.
+
+        A string with just a negation sign (`-`) is not a valid payload.
+
+        An empty string (``) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(integer_payload):
+            return False
+
+        if not cls.payload(integer_payload):
+            return False
+
+        integer_match = r&#34;^-?(\d+)&#34;
+        if re.match(integer_match, integer_payload) is None:
+            return False
+
+        number = int(integer_payload)
+        if number &lt; -(2 ** 63) or number &gt; 2 ** 63:
+            return False
+
+        return True
+
+    @classmethod
+    def float(cls, float_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Float types are UTF-8 encoded string literal representations
+        of 64-bit signed floating point numbers.
+
+        Floats range from  2^(-1074) to (2-(2^-52))*2^1023.
+        The payload may only contain whole numbers, the negation character “-&#34;,
+        the exponent character “e” or “E” and the decimal separator “.&#34;,
+        no other characters, including spaces (” “) are permitted
+
+        The dot character (&#34;.&#34;) is the decimal separator (used if necessary)
+        and may only have a single instance present in the payload.
+
+        Representations of numeric concepts such as “NaN” (Not a Number)
+        and “Infinity” are not a valid payload.
+
+        A string with just a negation sign (&#34;-&#34;) is not a valid payload
+        An empty string (&#34;&#34;) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(float_payload):
+            return False
+
+        if not cls.payload(float_payload):
+            return False
+
+        float_match = r&#34;^-?(\d+)(.\d+)?([eE]\d+)?$&#34;
+        if re.match(float_match, float_payload) is None:
+            return False
+
+        return True
+
+    @classmethod
+    def boolean(cls, boolean_payload: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Booleans must be converted
+        to the string literals &#34;true&#34; or &#34;false&#34;.
+
+        Representation is case sensitive, e.g. &#34;TRUE&#34; or &#34;FALSE&#34; are not valid payloads.
+
+        An empty string (&#34;&#34;) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(boolean_payload):
+            return False
+
+        if not cls.payload(boolean_payload):
+            return False
+
+        if boolean_payload != &#34;true&#34; or boolean_payload != &#34;false&#34;:
+            return False
+
+        return True
+
+    @classmethod
+    def enum(cls, enum_payload: str, format_of: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Enum payloads must be one of the values specified
+        in the format definition of the property.
+
+        Enum payloads are case sensitive, e.g. &#34;Car&#34; will
+        not match a format definition of &#34;car&#34;.
+
+        Payloads should have leading and trailing whitespace removed.
+        An empty string (&#34;&#34;) is not a valid payload.
+        &#34;&#34;&#34;
+        if not bool(enum_payload) or not bool(format_of):
+            return False
+
+        if not cls.payload(enum_payload):
+            return False
+
+        if enum_payload not in format_of.split(&#34;,&#34;):
+            return False
+
+        if enum_payload != enum_payload.strip():
+            return False
+
+        return True
+
+    @classmethod
+    def color(cls, color_payload: str, format_of: str) -&gt; bool:
+        &#34;&#34;&#34;`SPEC`
+
+        Color payload validity varies depending on the
+        property format definition of either &#34;rgb&#34; or &#34;hsv&#34;.
+
+        Both payload types contain comma separated
+        whole numbers of differing restricted ranges.
+
+        The encoded string may only contain whole numbers and
+        the comma character &#34;,&#34;, no other characters are permitted,
+        including spaces (&#34; &#34;).
+
+        Payloads for type &#34;rgb&#34; contains 3 comma separated values
+        of numbers with a valid range between 0 and 255. e.g. 100,100,100 .
+
+        Payloads for type &#34;hsv&#34; contains 3 comma separated values of numbers.
+        The first number has a range of 0 to 360,
+        the second and third numbers have a range of 0 to 100. e.g. 300,50,75.
+
+        An empty string (&#34;&#34;) is not a valid payload
+        &#34;&#34;&#34;
+        if (
+            not bool(color_payload)
+            or not bool(format_of)
+            or not cls.payload(color_payload)
+        ):
+            return False
+
+        color_match = r&#34;(\d+),(\d+),(\d+)&#34;
+        match = re.match(color_match, color_payload)
+        if match is None:
+            return False
+
+        values = [int(c) for c in match.groups()]
+        if format_of == &#34;rgb&#34;:
+            if any(v &lt; 0 or v &gt; 255 for v in values):
+                return False
+
+        elif format_of == &#34;hsv&#34;:
+            if values[0] &lt; 0 or values[0] &gt; 360 or any(v &lt; 0 or v &gt; 100 for v in values):
+                return False
+
+        else:
+            return False
+
+        return True</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="homie_spec.validation.Valid.boolean"><code class="name flex">
+<span>def <span class="ident">boolean</span></span>(<span>boolean_payload: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>Booleans must be converted
+to the string literals "true" or "false".</p>
+<p>Representation is case sensitive, e.g. "TRUE" or "FALSE" are not valid payloads.</p>
+<p>An empty string ("") is not a valid payload.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def boolean(cls, boolean_payload: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    Booleans must be converted
+    to the string literals &#34;true&#34; or &#34;false&#34;.
+
+    Representation is case sensitive, e.g. &#34;TRUE&#34; or &#34;FALSE&#34; are not valid payloads.
+
+    An empty string (&#34;&#34;) is not a valid payload.
+    &#34;&#34;&#34;
+    if not bool(boolean_payload):
+        return False
+
+    if not cls.payload(boolean_payload):
+        return False
+
+    if boolean_payload != &#34;true&#34; or boolean_payload != &#34;false&#34;:
+        return False
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.color"><code class="name flex">
+<span>def <span class="ident">color</span></span>(<span>color_payload: str, format_of: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>Color payload validity varies depending on the
+property format definition of either "rgb" or "hsv".</p>
+<p>Both payload types contain comma separated
+whole numbers of differing restricted ranges.</p>
+<p>The encoded string may only contain whole numbers and
+the comma character ",", no other characters are permitted,
+including spaces (" ").</p>
+<p>Payloads for type "rgb" contains 3 comma separated values
+of numbers with a valid range between 0 and 255. e.g. 100,100,100 .</p>
+<p>Payloads for type "hsv" contains 3 comma separated values of numbers.
+The first number has a range of 0 to 360,
+the second and third numbers have a range of 0 to 100. e.g. 300,50,75.</p>
+<p>An empty string ("") is not a valid payload</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def color(cls, color_payload: str, format_of: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    Color payload validity varies depending on the
+    property format definition of either &#34;rgb&#34; or &#34;hsv&#34;.
+
+    Both payload types contain comma separated
+    whole numbers of differing restricted ranges.
+
+    The encoded string may only contain whole numbers and
+    the comma character &#34;,&#34;, no other characters are permitted,
+    including spaces (&#34; &#34;).
+
+    Payloads for type &#34;rgb&#34; contains 3 comma separated values
+    of numbers with a valid range between 0 and 255. e.g. 100,100,100 .
+
+    Payloads for type &#34;hsv&#34; contains 3 comma separated values of numbers.
+    The first number has a range of 0 to 360,
+    the second and third numbers have a range of 0 to 100. e.g. 300,50,75.
+
+    An empty string (&#34;&#34;) is not a valid payload
+    &#34;&#34;&#34;
+    if (
+        not bool(color_payload)
+        or not bool(format_of)
+        or not cls.payload(color_payload)
+    ):
+        return False
+
+    color_match = r&#34;(\d+),(\d+),(\d+)&#34;
+    match = re.match(color_match, color_payload)
+    if match is None:
+        return False
+
+    values = [int(c) for c in match.groups()]
+    if format_of == &#34;rgb&#34;:
+        if any(v &lt; 0 or v &gt; 255 for v in values):
+            return False
+
+    elif format_of == &#34;hsv&#34;:
+        if values[0] &lt; 0 or values[0] &gt; 360 or any(v &lt; 0 or v &gt; 100 for v in values):
+            return False
+
+    else:
+        return False
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.enum"><code class="name flex">
+<span>def <span class="ident">enum</span></span>(<span>enum_payload: str, format_of: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>Enum payloads must be one of the values specified
+in the format definition of the property.</p>
+<p>Enum payloads are case sensitive, e.g. "Car" will
+not match a format definition of "car".</p>
+<p>Payloads should have leading and trailing whitespace removed.
+An empty string ("") is not a valid payload.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def enum(cls, enum_payload: str, format_of: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    Enum payloads must be one of the values specified
+    in the format definition of the property.
+
+    Enum payloads are case sensitive, e.g. &#34;Car&#34; will
+    not match a format definition of &#34;car&#34;.
+
+    Payloads should have leading and trailing whitespace removed.
+    An empty string (&#34;&#34;) is not a valid payload.
+    &#34;&#34;&#34;
+    if not bool(enum_payload) or not bool(format_of):
+        return False
+
+    if not cls.payload(enum_payload):
+        return False
+
+    if enum_payload not in format_of.split(&#34;,&#34;):
+        return False
+
+    if enum_payload != enum_payload.strip():
+        return False
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.float"><code class="name flex">
+<span>def <span class="ident">float</span></span>(<span>float_payload: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>Float types are UTF-8 encoded string literal representations
+of 64-bit signed floating point numbers.</p>
+<p>Floats range from
+2^(-1074) to (2-(2^-52))*2^1023.
+The payload may only contain whole numbers, the negation character “-",
+the exponent character “e” or “E” and the decimal separator “.",
+no other characters, including spaces (” “) are permitted</p>
+<p>The dot character (".") is the decimal separator (used if necessary)
+and may only have a single instance present in the payload.</p>
+<p>Representations of numeric concepts such as “NaN” (Not a Number)
+and “Infinity” are not a valid payload.</p>
+<p>A string with just a negation sign ("-") is not a valid payload
+An empty string ("") is not a valid payload.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def float(cls, float_payload: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    Float types are UTF-8 encoded string literal representations
+    of 64-bit signed floating point numbers.
+
+    Floats range from  2^(-1074) to (2-(2^-52))*2^1023.
+    The payload may only contain whole numbers, the negation character “-&#34;,
+    the exponent character “e” or “E” and the decimal separator “.&#34;,
+    no other characters, including spaces (” “) are permitted
+
+    The dot character (&#34;.&#34;) is the decimal separator (used if necessary)
+    and may only have a single instance present in the payload.
+
+    Representations of numeric concepts such as “NaN” (Not a Number)
+    and “Infinity” are not a valid payload.
+
+    A string with just a negation sign (&#34;-&#34;) is not a valid payload
+    An empty string (&#34;&#34;) is not a valid payload.
+    &#34;&#34;&#34;
+    if not bool(float_payload):
+        return False
+
+    if not cls.payload(float_payload):
+        return False
+
+    float_match = r&#34;^-?(\d+)(.\d+)?([eE]\d+)?$&#34;
+    if re.match(float_match, float_payload) is None:
+        return False
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.integer"><code class="name flex">
+<span>def <span class="ident">integer</span></span>(<span>integer_payload: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>Integer types are UTF-8 encoded string literal
+representations of 64-bit signed whole numbers.</p>
+<p>Integers range from -9,223,372,036,854,775,808 (-2^63)
+to 9,223,372,036,854,775,807 (263-1).</p>
+<p>The payload may only contain whole numbers and the negation
+character <code>-</code>. No other characters including spaces (<code></code>) are permitted.</p>
+<p>A string with just a negation sign (<code>-</code>) is not a valid payload.</p>
+<p>An empty string (``) is not a valid payload.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def integer(cls, integer_payload: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    Integer types are UTF-8 encoded string literal
+    representations of 64-bit signed whole numbers.
+
+    Integers range from -9,223,372,036,854,775,808 (-2^63)
+    to 9,223,372,036,854,775,807 (263-1).
+
+    The payload may only contain whole numbers and the negation
+    character `-`. No other characters including spaces (` `) are permitted.
+
+    A string with just a negation sign (`-`) is not a valid payload.
+
+    An empty string (``) is not a valid payload.
+    &#34;&#34;&#34;
+    if not bool(integer_payload):
+        return False
+
+    if not cls.payload(integer_payload):
+        return False
+
+    integer_match = r&#34;^-?(\d+)&#34;
+    if re.match(integer_match, integer_payload) is None:
+        return False
+
+    number = int(integer_payload)
+    if number &lt; -(2 ** 63) or number &gt; 2 ** 63:
+        return False
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.payload"><code class="name flex">
+<span>def <span class="ident">payload</span></span>(<span>payload: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>Every MQTT message payload MUST be sent as a UTF-8 encoded string.</p>
+<p>The value published as payload MUST be valid for the
+respective property/attribute type as per the list below.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def payload(payload: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    Every MQTT message payload MUST be sent as a UTF-8 encoded string.
+
+    The value published as payload MUST be valid for the
+    respective property/attribute type as per the list below.
+    &#34;&#34;&#34;
+    # TODO: Change payload to bytes  # pylint: disable=fixme
+    return isinstance(payload, str)</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.string"><code class="name flex">
+<span>def <span class="ident">string</span></span>(<span>string_payload: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>String types are limited to 268,435,456 characters
+An empty string ("") is a valid payload</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def string(cls, string_payload: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    String types are limited to 268,435,456 characters
+    An empty string (&#34;&#34;) is a valid payload
+    &#34;&#34;&#34;
+    return cls.payload(string_payload) and len(string_payload) &lt; 2 ** 28</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.topic"><code class="name flex">
+<span>def <span class="ident">topic</span></span>(<span>topic: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>An MQTT topic consists of one or more topic levels,
+separated by the slash character (/).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def topic(cls, topic: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    An MQTT topic consists of one or more topic levels,
+    separated by the slash character (/).
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.validation.Valid.topic_id"><code class="name flex">
+<span>def <span class="ident">topic_id</span></span>(<span>topic_id: str) -> bool</span>
+</code></dt>
+<dd>
+<section class="desc"><p><code>SPEC</code></p>
+<p>A topic level ID MAY contain lowercase letters from a to z,
+numbers from 0 to 9 as well as the hyphen character (-).</p>
+<p>A topic level ID MUST NOT start or end with a hyphen (-).
+The special character $ is used and reserved for Homie attributes.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def topic_id(topic_id: str) -&gt; bool:
+    &#34;&#34;&#34;`SPEC`
+
+    A topic level ID MAY contain lowercase letters from a to z,
+    numbers from 0 to 9 as well as the hyphen character (-).
+
+    A topic level ID MUST NOT start or end with a hyphen (-).
+    The special character $ is used and reserved for Homie attributes.
+    &#34;&#34;&#34;
+    return topic_id[0] != &#34;-&#34; and all(
+        c == &#34;-&#34; or c in ascii_lowercase for c in topic_id
+    )</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="homie_spec" href="index.html">homie_spec</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="homie_spec.validation.Valid" href="#homie_spec.validation.Valid">Valid</a></code></h4>
+<ul class="two-column">
+<li><code><a title="homie_spec.validation.Valid.boolean" href="#homie_spec.validation.Valid.boolean">boolean</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.color" href="#homie_spec.validation.Valid.color">color</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.enum" href="#homie_spec.validation.Valid.enum">enum</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.float" href="#homie_spec.validation.Valid.float">float</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.integer" href="#homie_spec.validation.Valid.integer">integer</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.payload" href="#homie_spec.validation.Valid.payload">payload</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.string" href="#homie_spec.validation.Valid.string">string</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.topic" href="#homie_spec.validation.Valid.topic">topic</a></code></li>
+<li><code><a title="homie_spec.validation.Valid.topic_id" href="#homie_spec.validation.Valid.topic_id">topic_id</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

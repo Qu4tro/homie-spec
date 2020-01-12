@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>homie_spec.properties API documentation</title>
+<meta name="description" content="Exposes the Property class, Datatype and multiple partial constructors" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>homie_spec.properties</code></h1>
+</header>
+<section id="section-intro">
+<p>Exposes the Property class, Datatype and multiple partial constructors</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Exposes the Property class, Datatype and multiple partial constructors
+&#34;&#34;&#34;
+
+from enum import Enum, auto
+from typing import NamedTuple, Callable, Optional, Iterable
+from functools import partial
+
+from homie_spec.messages import Message
+
+
+class Datatype(Enum):
+    &#34;Enum representation of the different values, the `$datatype` attribute can take&#34;
+
+    INTEGER = auto()
+    FLOAT = auto()
+    BOOLEAN = auto()
+    STRING = auto()
+    ENUM = auto()
+    COLOR = auto()
+
+    @property
+    def payload(self) -&gt; str:
+        &#34;&#34;&#34;
+        Serializes the object conforming it to be used inside a MQTT payload
+
+        &gt;&gt;&gt; Datatype.INTEGER.payload
+        &#39;integer&#39;
+
+        &gt;&gt;&gt; Datatype.FLOAT.payload
+        &#39;float&#39;
+        &#34;&#34;&#34;
+        return self.name.lower()  # pylint: disable=no-member
+
+
+__pdoc__ = {
+    &#34;Datatype.INTEGER&#34;: &#34;Integer type.&#34;,
+    &#34;Datatype.FLOAT&#34;: &#34;Float type.&#34;,
+    &#34;Datatype.BOOLEAN&#34;: &#34;Boolean type.&#34;,
+    &#34;Datatype.STRING&#34;: &#34;String type.&#34;,
+    &#34;Datatype.ENUM&#34;: &#34;Enum type.&#34;,
+    &#34;Datatype.COLOR&#34;: &#34;Color type.&#34;,
+}
+
+
+class Property(NamedTuple):
+    &#34;Object representation of a property according to the Homie topology&#34;
+
+    name: str
+    datatype: Datatype
+
+    get: Callable[[], str]
+    set: Optional[Callable[[str], None]] = None
+
+    retained: Optional[bool] = None
+    settable: Optional[bool] = None
+
+    unit: Optional[str] = None
+    formatOf: Optional[str] = None
+
+    def messages(self, prefix: str) -&gt; Iterable[Message]:
+        &#34;&#34;&#34;
+        Yields the messages from the property attributes.
+        All its messages are prefixed with its only parameter.
+
+        &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, &#34;property&#34;, get=lambda: &#34;hello world&#34;)
+        &gt;&gt;&gt; next(prop.messages(&#34;/prefix&#34;)).payload
+        &#39;A Property!&#39;
+        &#34;&#34;&#34;
+        msg = partial(Message, prefix=prefix)
+
+        yield msg(&#34;$name&#34;, self.name)
+        yield msg(&#34;$datatype&#34;, self.datatype.payload)
+
+        if self.retained is not None:
+            retained = &#34;true&#34; if self.retained else &#34;false&#34;
+            yield msg(&#34;$retained&#34;, retained)
+
+        if self.settable is not None:
+            settable = &#34;true&#34; if self.settable else &#34;false&#34;
+            yield msg(&#34;$settable&#34;, settable)
+
+        if self.unit is not None:
+            yield msg(&#34;$unit&#34;, self.unit)
+        if self.formatOf is not None:
+            yield msg(&#34;$format&#34;, self.formatOf)
+
+    def getter_message(self, prefix: str) -&gt; Message:
+        &#34;&#34;&#34;
+        Calls the property getter and returns its respective message
+
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; msg = prop.getter_message(&#34;homie/device/node/prop&#34;)
+        &gt;&gt;&gt; msg.topic
+        &#39;homie/device/node/prop&#39;
+        &gt;&gt;&gt; msg.payload
+        &#39;4&#39;
+        &#34;&#34;&#34;
+        msg = partial(Message, prefix=prefix)
+
+        return msg(&#34;&#34;, self.get(), retained=self.retained)
+
+    def setter_message(self, prefix: str, payload: str = &#34;&#34;) -&gt; Optional[Message]:
+        &#34;&#34;&#34;
+        Creates the necessary message to call the property setter.
+        Returns None if the property is not settable.
+
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=False)
+        &gt;&gt;&gt; prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;) is None
+        True
+
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=True)
+        &gt;&gt;&gt; msg = prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;)
+        &gt;&gt;&gt; msg.topic
+        &#39;homie/device/node/prop/set&#39;
+        &gt;&gt;&gt; msg.payload
+        &#39;2&#39;
+        &#34;&#34;&#34;
+        if self.settable is not True:
+            return None
+
+        msg = partial(Message, prefix=prefix)
+
+        return msg(&#34;set&#34;, payload)
+
+
+PercentageProperty = partial(  # pylint: disable=invalid-name
+    Property, datatype=Datatype.INTEGER, formatOf=&#34;0:100&#34;, unit=&#34;%&#34;
+)
+BooleanProperty = partial(  # pylint: disable=invalid-name
+    Property, datatype=Datatype.BOOLEAN
+)
+
+
+Property.name.__doc__ = &#34;Friendly name of the property.&#34;
+Property.datatype.__doc__ = &#34;The property&#39;s datatype.&#34;
+Property.formatOf.__doc__ = &#34;Specifies restrictions or options for the given data type&#34;
+Property.settable.__doc__ = &#34;Settable (true). Default is read-only (false)&#34;
+Property.retained.__doc__ = &#34;Non-retained (false). The spec Default is Retained (true).&#34;
+Property.unit.__doc__ = &#34;Optional unit of this property. Should follow a accepted value.&#34;
+
+
+RECOMMENDED_UNITS = [
+    &#34;°C&#34;,
+    &#34;°F&#34;,
+    &#34;°&#34;,
+    &#34;L&#34;,
+    &#34;gal&#34;,
+    &#34;V&#34;,
+    &#34;W&#34;,
+    &#34;A&#34;,
+    &#34;%&#34;,
+    &#34;m&#34;,
+    &#34;ft&#34;,
+    &#34;Pa&#34;,
+    &#34;psi&#34;,
+    &#34;#&#34;,
+]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="homie_spec.properties.Datatype"><code class="flex name class">
+<span>class <span class="ident">Datatype</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Enum representation of the different values, the <code>$datatype</code> attribute can take</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Datatype(Enum):
+    &#34;Enum representation of the different values, the `$datatype` attribute can take&#34;
+
+    INTEGER = auto()
+    FLOAT = auto()
+    BOOLEAN = auto()
+    STRING = auto()
+    ENUM = auto()
+    COLOR = auto()
+
+    @property
+    def payload(self) -&gt; str:
+        &#34;&#34;&#34;
+        Serializes the object conforming it to be used inside a MQTT payload
+
+        &gt;&gt;&gt; Datatype.INTEGER.payload
+        &#39;integer&#39;
+
+        &gt;&gt;&gt; Datatype.FLOAT.payload
+        &#39;float&#39;
+        &#34;&#34;&#34;
+        return self.name.lower()  # pylint: disable=no-member</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="homie_spec.properties.Datatype.BOOLEAN"><code class="name">var <span class="ident">BOOLEAN</span></code></dt>
+<dd>
+<section class="desc"><p>Boolean type.</p></section>
+</dd>
+<dt id="homie_spec.properties.Datatype.COLOR"><code class="name">var <span class="ident">COLOR</span></code></dt>
+<dd>
+<section class="desc"><p>Color type.</p></section>
+</dd>
+<dt id="homie_spec.properties.Datatype.ENUM"><code class="name">var <span class="ident">ENUM</span></code></dt>
+<dd>
+<section class="desc"><p>Enum type.</p></section>
+</dd>
+<dt id="homie_spec.properties.Datatype.FLOAT"><code class="name">var <span class="ident">FLOAT</span></code></dt>
+<dd>
+<section class="desc"><p>Float type.</p></section>
+</dd>
+<dt id="homie_spec.properties.Datatype.INTEGER"><code class="name">var <span class="ident">INTEGER</span></code></dt>
+<dd>
+<section class="desc"><p>Integer type.</p></section>
+</dd>
+<dt id="homie_spec.properties.Datatype.STRING"><code class="name">var <span class="ident">STRING</span></code></dt>
+<dd>
+<section class="desc"><p>String type.</p></section>
+</dd>
+</dl>
+</dd>
+<dt id="homie_spec.properties.Property"><code class="flex name class">
+<span>class <span class="ident">Property</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Object representation of a property according to the Homie topology</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Property(NamedTuple):
+    &#34;Object representation of a property according to the Homie topology&#34;
+
+    name: str
+    datatype: Datatype
+
+    get: Callable[[], str]
+    set: Optional[Callable[[str], None]] = None
+
+    retained: Optional[bool] = None
+    settable: Optional[bool] = None
+
+    unit: Optional[str] = None
+    formatOf: Optional[str] = None
+
+    def messages(self, prefix: str) -&gt; Iterable[Message]:
+        &#34;&#34;&#34;
+        Yields the messages from the property attributes.
+        All its messages are prefixed with its only parameter.
+
+        &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, &#34;property&#34;, get=lambda: &#34;hello world&#34;)
+        &gt;&gt;&gt; next(prop.messages(&#34;/prefix&#34;)).payload
+        &#39;A Property!&#39;
+        &#34;&#34;&#34;
+        msg = partial(Message, prefix=prefix)
+
+        yield msg(&#34;$name&#34;, self.name)
+        yield msg(&#34;$datatype&#34;, self.datatype.payload)
+
+        if self.retained is not None:
+            retained = &#34;true&#34; if self.retained else &#34;false&#34;
+            yield msg(&#34;$retained&#34;, retained)
+
+        if self.settable is not None:
+            settable = &#34;true&#34; if self.settable else &#34;false&#34;
+            yield msg(&#34;$settable&#34;, settable)
+
+        if self.unit is not None:
+            yield msg(&#34;$unit&#34;, self.unit)
+        if self.formatOf is not None:
+            yield msg(&#34;$format&#34;, self.formatOf)
+
+    def getter_message(self, prefix: str) -&gt; Message:
+        &#34;&#34;&#34;
+        Calls the property getter and returns its respective message
+
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; msg = prop.getter_message(&#34;homie/device/node/prop&#34;)
+        &gt;&gt;&gt; msg.topic
+        &#39;homie/device/node/prop&#39;
+        &gt;&gt;&gt; msg.payload
+        &#39;4&#39;
+        &#34;&#34;&#34;
+        msg = partial(Message, prefix=prefix)
+
+        return msg(&#34;&#34;, self.get(), retained=self.retained)
+
+    def setter_message(self, prefix: str, payload: str = &#34;&#34;) -&gt; Optional[Message]:
+        &#34;&#34;&#34;
+        Creates the necessary message to call the property setter.
+        Returns None if the property is not settable.
+
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=False)
+        &gt;&gt;&gt; prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;) is None
+        True
+
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=True)
+        &gt;&gt;&gt; msg = prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;)
+        &gt;&gt;&gt; msg.topic
+        &#39;homie/device/node/prop/set&#39;
+        &gt;&gt;&gt; msg.payload
+        &#39;2&#39;
+        &#34;&#34;&#34;
+        if self.settable is not True:
+            return None
+
+        msg = partial(Message, prefix=prefix)
+
+        return msg(&#34;set&#34;, payload)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="homie_spec.properties.Property.datatype"><code class="name">var <span class="ident">datatype</span></code></dt>
+<dd>
+<section class="desc"><p>The property's datatype.</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.formatOf"><code class="name">var <span class="ident">formatOf</span></code></dt>
+<dd>
+<section class="desc"><p>Specifies restrictions or options for the given data type</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.get"><code class="name">var <span class="ident">get</span></code></dt>
+<dd>
+<section class="desc"><p>Alias for field number 2</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<section class="desc"><p>Friendly name of the property.</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.retained"><code class="name">var <span class="ident">retained</span></code></dt>
+<dd>
+<section class="desc"><p>Non-retained (false). The spec Default is Retained (true).</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.set"><code class="name">var <span class="ident">set</span></code></dt>
+<dd>
+<section class="desc"><p>Alias for field number 3</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.settable"><code class="name">var <span class="ident">settable</span></code></dt>
+<dd>
+<section class="desc"><p>Settable (true). Default is read-only (false)</p></section>
+</dd>
+<dt id="homie_spec.properties.Property.unit"><code class="name">var <span class="ident">unit</span></code></dt>
+<dd>
+<section class="desc"><p>Optional unit of this property. Should follow a accepted value.</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="homie_spec.properties.Property.getter_message"><code class="name flex">
+<span>def <span class="ident">getter_message</span></span>(<span>self, prefix: str) -> <a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calls the property getter and returns its respective message</p>
+<pre><code>&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, lambda: "4")
+&gt;&gt;&gt; msg = prop.getter_message("homie/device/node/prop")
+&gt;&gt;&gt; msg.topic
+'homie/device/node/prop'
+&gt;&gt;&gt; msg.payload
+'4'
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getter_message(self, prefix: str) -&gt; Message:
+    &#34;&#34;&#34;
+    Calls the property getter and returns its respective message
+
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+    &gt;&gt;&gt; msg = prop.getter_message(&#34;homie/device/node/prop&#34;)
+    &gt;&gt;&gt; msg.topic
+    &#39;homie/device/node/prop&#39;
+    &gt;&gt;&gt; msg.payload
+    &#39;4&#39;
+    &#34;&#34;&#34;
+    msg = partial(Message, prefix=prefix)
+
+    return msg(&#34;&#34;, self.get(), retained=self.retained)</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.properties.Property.messages"><code class="name flex">
+<span>def <span class="ident">messages</span></span>(<span>self, prefix: str) -> Iterable[<a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a>]</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Yields the messages from the property attributes.
+All its messages are prefixed with its only parameter.</p>
+<pre><code>&gt;&gt;&gt; prop = Property("A Property!", "property", get=lambda: "hello world")
+&gt;&gt;&gt; next(prop.messages("/prefix")).payload
+'A Property!'
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def messages(self, prefix: str) -&gt; Iterable[Message]:
+    &#34;&#34;&#34;
+    Yields the messages from the property attributes.
+    All its messages are prefixed with its only parameter.
+
+    &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, &#34;property&#34;, get=lambda: &#34;hello world&#34;)
+    &gt;&gt;&gt; next(prop.messages(&#34;/prefix&#34;)).payload
+    &#39;A Property!&#39;
+    &#34;&#34;&#34;
+    msg = partial(Message, prefix=prefix)
+
+    yield msg(&#34;$name&#34;, self.name)
+    yield msg(&#34;$datatype&#34;, self.datatype.payload)
+
+    if self.retained is not None:
+        retained = &#34;true&#34; if self.retained else &#34;false&#34;
+        yield msg(&#34;$retained&#34;, retained)
+
+    if self.settable is not None:
+        settable = &#34;true&#34; if self.settable else &#34;false&#34;
+        yield msg(&#34;$settable&#34;, settable)
+
+    if self.unit is not None:
+        yield msg(&#34;$unit&#34;, self.unit)
+    if self.formatOf is not None:
+        yield msg(&#34;$format&#34;, self.formatOf)</code></pre>
+</details>
+</dd>
+<dt id="homie_spec.properties.Property.setter_message"><code class="name flex">
+<span>def <span class="ident">setter_message</span></span>(<span>self, prefix: str, payload: str = '') -> Union[<a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a>, NoneType]</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates the necessary message to call the property setter.
+Returns None if the property is not settable.</p>
+<pre><code>&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, get=lambda: "4", settable=False)
+&gt;&gt;&gt; prop.setter_message("homie/device/node/prop", "2") is None
+True
+
+&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, get=lambda: "4", settable=True)
+&gt;&gt;&gt; msg = prop.setter_message("homie/device/node/prop", "2")
+&gt;&gt;&gt; msg.topic
+'homie/device/node/prop/set'
+&gt;&gt;&gt; msg.payload
+'2'
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setter_message(self, prefix: str, payload: str = &#34;&#34;) -&gt; Optional[Message]:
+    &#34;&#34;&#34;
+    Creates the necessary message to call the property setter.
+    Returns None if the property is not settable.
+
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=False)
+    &gt;&gt;&gt; prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;) is None
+    True
+
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=True)
+    &gt;&gt;&gt; msg = prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;)
+    &gt;&gt;&gt; msg.topic
+    &#39;homie/device/node/prop/set&#39;
+    &gt;&gt;&gt; msg.payload
+    &#39;2&#39;
+    &#34;&#34;&#34;
+    if self.settable is not True:
+        return None
+
+    msg = partial(Message, prefix=prefix)
+
+    return msg(&#34;set&#34;, payload)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="homie_spec" href="index.html">homie_spec</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="homie_spec.properties.Datatype" href="#homie_spec.properties.Datatype">Datatype</a></code></h4>
+<ul class="two-column">
+<li><code><a title="homie_spec.properties.Datatype.BOOLEAN" href="#homie_spec.properties.Datatype.BOOLEAN">BOOLEAN</a></code></li>
+<li><code><a title="homie_spec.properties.Datatype.COLOR" href="#homie_spec.properties.Datatype.COLOR">COLOR</a></code></li>
+<li><code><a title="homie_spec.properties.Datatype.ENUM" href="#homie_spec.properties.Datatype.ENUM">ENUM</a></code></li>
+<li><code><a title="homie_spec.properties.Datatype.FLOAT" href="#homie_spec.properties.Datatype.FLOAT">FLOAT</a></code></li>
+<li><code><a title="homie_spec.properties.Datatype.INTEGER" href="#homie_spec.properties.Datatype.INTEGER">INTEGER</a></code></li>
+<li><code><a title="homie_spec.properties.Datatype.STRING" href="#homie_spec.properties.Datatype.STRING">STRING</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="homie_spec.properties.Property" href="#homie_spec.properties.Property">Property</a></code></h4>
+<ul class="two-column">
+<li><code><a title="homie_spec.properties.Property.datatype" href="#homie_spec.properties.Property.datatype">datatype</a></code></li>
+<li><code><a title="homie_spec.properties.Property.formatOf" href="#homie_spec.properties.Property.formatOf">formatOf</a></code></li>
+<li><code><a title="homie_spec.properties.Property.get" href="#homie_spec.properties.Property.get">get</a></code></li>
+<li><code><a title="homie_spec.properties.Property.getter_message" href="#homie_spec.properties.Property.getter_message">getter_message</a></code></li>
+<li><code><a title="homie_spec.properties.Property.messages" href="#homie_spec.properties.Property.messages">messages</a></code></li>
+<li><code><a title="homie_spec.properties.Property.name" href="#homie_spec.properties.Property.name">name</a></code></li>
+<li><code><a title="homie_spec.properties.Property.retained" href="#homie_spec.properties.Property.retained">retained</a></code></li>
+<li><code><a title="homie_spec.properties.Property.set" href="#homie_spec.properties.Property.set">set</a></code></li>
+<li><code><a title="homie_spec.properties.Property.settable" href="#homie_spec.properties.Property.settable">settable</a></code></li>
+<li><code><a title="homie_spec.properties.Property.setter_message" href="#homie_spec.properties.Property.setter_message">setter_message</a></code></li>
+<li><code><a title="homie_spec.properties.Property.unit" href="#homie_spec.properties.Property.unit">unit</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
