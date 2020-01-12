@@ -1,8 +1,11 @@
 [tool.poetry]
 name = "homie-spec"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "homie-spec is a Python library that handles the v4 Homie Convention"
 authors = ["Xavier Francisco <xavier.n.francisco@gmail.com>"]
+license = 'MIT'
+readme = 'README.md'
+keywords = ["homie", "mqtt"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
