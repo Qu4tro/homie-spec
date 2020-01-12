@@ -10,11 +10,11 @@ install:
   - pip install tox-travis
 script:
   - tox
+before_deploy:
+  - poetry config http-basic.pypi $PYPI_USER $PYPI_PASSWORD
 deploy:
   provider: script
-  script:
-    - poetry config http-basic.pypi $PYPI_USER $PYPI_PASSWORD
-    - poetry publish --build
+  script: poetry publish --build
   on:
     tags: true
     condition: "$TRAVIS_PYTHON_VERSION == 3.8"
