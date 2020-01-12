@@ -2,9 +2,6 @@
 disable=bad-continuation,
         no-value-for-parameter
 
-[MISCELLANEOUS]
-notes=FIXME
-
 [DESIGN]
 # Maximum number of arguments for function / method.
 max-args=6
