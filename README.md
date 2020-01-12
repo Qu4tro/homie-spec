@@ -2,8 +2,9 @@
 
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/homie-spec.svg?style=flat-square)](https://pypi.python.org/pypi/homie-spec/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/homie-spec.svg?style=flat-square)](https://pypi.python.org/pypi/homie-spec/)
-
 [![GitHub license](https://img.shields.io/github/license/Qu4tro/homie-spec.svg?style=flat-square)](https://github.com/Qu4tro/homie-spec/blob/master/LICENSE)
+
+[Coverage](https://img.shields.io/codecov/c/github/Qu4tro/homie-spec?style=flat-square)
 [![Build Status](https://img.shields.io/travis/Qu4tro/homie-spec/master?style=flat-square)](https://travis-ci.com/Qu4tro/homie-spec)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/Qu4tro/homie-spec/graphs/commit-activity)
 

@@ -14,6 +14,7 @@ python = "^3.6"
 tox = "^3.14.3"
 pdoc3 = "^0.7.2"
 pytest = "^5.2"
+codecov = "^2.0.15"
 pytest-cov = "^2.8.1"
 pytest-mypy = "^0.4.2"
 pytest-watch = "^4.2.0"
@@ -35,7 +36,6 @@ envlist = py36,py37,py38
 [testenv]
 passenv = TOXENV CI TRAVIS TRAVIS_* CODECOV_*
 whitelist_externals = poetry
-deps = codecov>=1.4.0
 commands =
   poetry install -v
   poetry run pytest --mypy --pylint --black --doctest-modules --cov=homie_spec {posargs}
