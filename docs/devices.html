@@ -106,7 +106,7 @@ class Device(NamedTuple):
         All its messages are prefixed with the device prefix and the device id.
 
         &gt;&gt;&gt; from homie_spec.properties import Datatype
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
         &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
         &gt;&gt;&gt; device = Device(&#34;D&#34;, &#34;d&#34;, {&#34;n&#34;: node})
         &gt;&gt;&gt; msg = device.getter_message(&#34;n/p&#34;)
@@ -152,7 +152,7 @@ class Device(NamedTuple):
         Enumerate all valid topics where the property value should reside.
 
         &gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
         &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
         &gt;&gt;&gt; device = Device(&#34;d&#34;, &#34;D&#34;, {&#34;n&#34;: node})
         &gt;&gt;&gt; device.property_topics[&#39;homie/d/n/p&#39;].get()
@@ -279,7 +279,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
         All its messages are prefixed with the device prefix and the device id.
 
         &gt;&gt;&gt; from homie_spec.properties import Datatype
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
         &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
         &gt;&gt;&gt; device = Device(&#34;D&#34;, &#34;d&#34;, {&#34;n&#34;: node})
         &gt;&gt;&gt; msg = device.getter_message(&#34;n/p&#34;)
@@ -325,7 +325,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
         Enumerate all valid topics where the property value should reside.
 
         &gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
         &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
         &gt;&gt;&gt; device = Device(&#34;d&#34;, &#34;D&#34;, {&#34;n&#34;: node})
         &gt;&gt;&gt; device.property_topics[&#39;homie/d/n/p&#39;].get()
@@ -371,7 +371,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
 <dd>
 <section class="desc"><p>Enumerate all valid topics where the property value should reside.</p>
 <pre><code>&gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, lambda: "4")
+&gt;&gt;&gt; prop = Property("P", lambda: "4", Datatype.INTEGER)
 &gt;&gt;&gt; node = Node("N", "n", {"p": prop})
 &gt;&gt;&gt; device = Device("d", "D", {"n": node})
 &gt;&gt;&gt; device.property_topics['homie/d/n/p'].get()
@@ -387,7 +387,7 @@ def property_topics(self) -&gt; Mapping[str, Property]:
     Enumerate all valid topics where the property value should reside.
 
     &gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
     &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
     &gt;&gt;&gt; device = Device(&#34;d&#34;, &#34;D&#34;, {&#34;n&#34;: node})
     &gt;&gt;&gt; device.property_topics[&#39;homie/d/n/p&#39;].get()
@@ -412,7 +412,7 @@ call the getter function and returns its respective message.</p>
 <p>The <code>path</code> parameter takes the format of <code>{node_name}/{property_name}</code>.</p>
 <p>All its messages are prefixed with the device prefix and the device id.</p>
 <pre><code>&gt;&gt;&gt; from homie_spec.properties import Datatype
-&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, lambda: "4")
+&gt;&gt;&gt; prop = Property("P", lambda: "4", Datatype.INTEGER)
 &gt;&gt;&gt; node = Node("N", "n", {"p": prop})
 &gt;&gt;&gt; device = Device("D", "d", {"n": node})
 &gt;&gt;&gt; msg = device.getter_message("n/p")
@@ -446,7 +446,7 @@ ValueError: Unreachable path 'n/p' - Valid property paths are []
     All its messages are prefixed with the device prefix and the device id.
 
     &gt;&gt;&gt; from homie_spec.properties import Datatype
-    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
     &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
     &gt;&gt;&gt; device = Device(&#34;D&#34;, &#34;d&#34;, {&#34;n&#34;: node})
     &gt;&gt;&gt; msg = device.getter_message(&#34;n/p&#34;)

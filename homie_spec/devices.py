@@ -79,7 +79,7 @@ class Device(NamedTuple):
         All its messages are prefixed with the device prefix and the device id.
 
         >>> from homie_spec.properties import Datatype
-        >>> prop = Property("P", Datatype.INTEGER, lambda: "4")
+        >>> prop = Property("P", lambda: "4", Datatype.INTEGER)
         >>> node = Node("N", "n", {"p": prop})
         >>> device = Device("D", "d", {"n": node})
         >>> msg = device.getter_message("n/p")
@@ -125,7 +125,7 @@ class Device(NamedTuple):
         Enumerate all valid topics where the property value should reside.
 
         >>> from homie_spec.properties import Property, Datatype
-        >>> prop = Property("P", Datatype.INTEGER, lambda: "4")
+        >>> prop = Property("P", lambda: "4", Datatype.INTEGER)
         >>> node = Node("N", "n", {"p": prop})
         >>> device = Device("d", "D", {"n": node})
         >>> device.property_topics['homie/d/n/p'].get()

@@ -47,9 +47,9 @@ class Property(NamedTuple):
     "Object representation of a property according to the Homie topology"
 
     name: str
-    datatype: Datatype = Datatype.STRING
-
     get: Callable[[], str]
+
+    datatype: Datatype = Datatype.STRING
     set: Optional[Callable[[str], None]] = None
 
     retained: Optional[bool] = None
@@ -63,7 +63,7 @@ class Property(NamedTuple):
         Yields the messages from the property attributes.
         All its messages are prefixed with its only parameter.
 
-        >>> prop = Property("A Property!", "property", get=lambda: "hello world")
+        >>> prop = Property("A Property!", get=lambda: "hello world")
         >>> next(prop.messages("/prefix")).payload
         'A Property!'
         """
@@ -89,7 +89,7 @@ class Property(NamedTuple):
         """
         Calls the property getter and returns its respective message
 
-        >>> prop = Property("P", Datatype.INTEGER, lambda: "4")
+        >>> prop = Property("P", get=lambda: "4", datatype=Datatype.INTEGER)
         >>> msg = prop.getter_message("homie/device/node/prop")
         >>> msg.topic
         'homie/device/node/prop'
@@ -105,11 +105,11 @@ class Property(NamedTuple):
         Creates the necessary message to call the property setter.
         Returns None if the property is not settable.
 
-        >>> prop = Property("P", Datatype.INTEGER, get=lambda: "4", settable=False)
+        >>> prop = Property("P", get=lambda: "4", datatype=Datatype.INTEGER, settable=False)
         >>> prop.setter_message("homie/device/node/prop", "2") is None
         True
 
-        >>> prop = Property("P", Datatype.INTEGER, get=lambda: "4", settable=True)
+        >>> prop = Property("P", get=lambda: "4", datatype=Datatype.INTEGER, settable=True)
         >>> msg = prop.setter_message("homie/device/node/prop", "2")
         >>> msg.topic
         'homie/device/node/prop/set'

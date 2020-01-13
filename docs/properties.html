@@ -74,9 +74,9 @@ class Property(NamedTuple):
     &#34;Object representation of a property according to the Homie topology&#34;
 
     name: str
-    datatype: Datatype
-
     get: Callable[[], str]
+
+    datatype: Datatype = Datatype.STRING
     set: Optional[Callable[[str], None]] = None
 
     retained: Optional[bool] = None
@@ -90,7 +90,7 @@ class Property(NamedTuple):
         Yields the messages from the property attributes.
         All its messages are prefixed with its only parameter.
 
-        &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, &#34;property&#34;, get=lambda: &#34;hello world&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, get=lambda: &#34;hello world&#34;)
         &gt;&gt;&gt; next(prop.messages(&#34;/prefix&#34;)).payload
         &#39;A Property!&#39;
         &#34;&#34;&#34;
@@ -116,7 +116,7 @@ class Property(NamedTuple):
         &#34;&#34;&#34;
         Calls the property getter and returns its respective message
 
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER)
         &gt;&gt;&gt; msg = prop.getter_message(&#34;homie/device/node/prop&#34;)
         &gt;&gt;&gt; msg.topic
         &#39;homie/device/node/prop&#39;
@@ -132,11 +132,11 @@ class Property(NamedTuple):
         Creates the necessary message to call the property setter.
         Returns None if the property is not settable.
 
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=False)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER, settable=False)
         &gt;&gt;&gt; prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;) is None
         True
 
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=True)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER, settable=True)
         &gt;&gt;&gt; msg = prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;)
         &gt;&gt;&gt; msg.topic
         &#39;homie/device/node/prop/set&#39;
@@ -273,9 +273,9 @@ RECOMMENDED_UNITS = [
     &#34;Object representation of a property according to the Homie topology&#34;
 
     name: str
-    datatype: Datatype
-
     get: Callable[[], str]
+
+    datatype: Datatype = Datatype.STRING
     set: Optional[Callable[[str], None]] = None
 
     retained: Optional[bool] = None
@@ -289,7 +289,7 @@ RECOMMENDED_UNITS = [
         Yields the messages from the property attributes.
         All its messages are prefixed with its only parameter.
 
-        &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, &#34;property&#34;, get=lambda: &#34;hello world&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, get=lambda: &#34;hello world&#34;)
         &gt;&gt;&gt; next(prop.messages(&#34;/prefix&#34;)).payload
         &#39;A Property!&#39;
         &#34;&#34;&#34;
@@ -315,7 +315,7 @@ RECOMMENDED_UNITS = [
         &#34;&#34;&#34;
         Calls the property getter and returns its respective message
 
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER)
         &gt;&gt;&gt; msg = prop.getter_message(&#34;homie/device/node/prop&#34;)
         &gt;&gt;&gt; msg.topic
         &#39;homie/device/node/prop&#39;
@@ -331,11 +331,11 @@ RECOMMENDED_UNITS = [
         Creates the necessary message to call the property setter.
         Returns None if the property is not settable.
 
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=False)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER, settable=False)
         &gt;&gt;&gt; prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;) is None
         True
 
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=True)
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER, settable=True)
         &gt;&gt;&gt; msg = prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;)
         &gt;&gt;&gt; msg.topic
         &#39;homie/device/node/prop/set&#39;
@@ -365,7 +365,7 @@ RECOMMENDED_UNITS = [
 </dd>
 <dt id="homie_spec.properties.Property.get"><code class="name">var <span class="ident">get</span></code></dt>
 <dd>
-<section class="desc"><p>Alias for field number 2</p></section>
+<section class="desc"><p>Alias for field number 1</p></section>
 </dd>
 <dt id="homie_spec.properties.Property.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
@@ -395,7 +395,7 @@ RECOMMENDED_UNITS = [
 </code></dt>
 <dd>
 <section class="desc"><p>Calls the property getter and returns its respective message</p>
-<pre><code>&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, lambda: "4")
+<pre><code>&gt;&gt;&gt; prop = Property("P", get=lambda: "4", datatype=Datatype.INTEGER)
 &gt;&gt;&gt; msg = prop.getter_message("homie/device/node/prop")
 &gt;&gt;&gt; msg.topic
 'homie/device/node/prop'
@@ -410,7 +410,7 @@ RECOMMENDED_UNITS = [
     &#34;&#34;&#34;
     Calls the property getter and returns its respective message
 
-    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, lambda: &#34;4&#34;)
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER)
     &gt;&gt;&gt; msg = prop.getter_message(&#34;homie/device/node/prop&#34;)
     &gt;&gt;&gt; msg.topic
     &#39;homie/device/node/prop&#39;
@@ -428,7 +428,7 @@ RECOMMENDED_UNITS = [
 <dd>
 <section class="desc"><p>Yields the messages from the property attributes.
 All its messages are prefixed with its only parameter.</p>
-<pre><code>&gt;&gt;&gt; prop = Property("A Property!", "property", get=lambda: "hello world")
+<pre><code>&gt;&gt;&gt; prop = Property("A Property!", get=lambda: "hello world")
 &gt;&gt;&gt; next(prop.messages("/prefix")).payload
 'A Property!'
 </code></pre></section>
@@ -441,7 +441,7 @@ All its messages are prefixed with its only parameter.</p>
     Yields the messages from the property attributes.
     All its messages are prefixed with its only parameter.
 
-    &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, &#34;property&#34;, get=lambda: &#34;hello world&#34;)
+    &gt;&gt;&gt; prop = Property(&#34;A Property!&#34;, get=lambda: &#34;hello world&#34;)
     &gt;&gt;&gt; next(prop.messages(&#34;/prefix&#34;)).payload
     &#39;A Property!&#39;
     &#34;&#34;&#34;
@@ -470,11 +470,11 @@ All its messages are prefixed with its only parameter.</p>
 <dd>
 <section class="desc"><p>Creates the necessary message to call the property setter.
 Returns None if the property is not settable.</p>
-<pre><code>&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, get=lambda: "4", settable=False)
+<pre><code>&gt;&gt;&gt; prop = Property("P", get=lambda: "4", datatype=Datatype.INTEGER, settable=False)
 &gt;&gt;&gt; prop.setter_message("homie/device/node/prop", "2") is None
 True
 
-&gt;&gt;&gt; prop = Property("P", Datatype.INTEGER, get=lambda: "4", settable=True)
+&gt;&gt;&gt; prop = Property("P", get=lambda: "4", datatype=Datatype.INTEGER, settable=True)
 &gt;&gt;&gt; msg = prop.setter_message("homie/device/node/prop", "2")
 &gt;&gt;&gt; msg.topic
 'homie/device/node/prop/set'
@@ -490,11 +490,11 @@ True
     Creates the necessary message to call the property setter.
     Returns None if the property is not settable.
 
-    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=False)
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER, settable=False)
     &gt;&gt;&gt; prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;) is None
     True
 
-    &gt;&gt;&gt; prop = Property(&#34;P&#34;, Datatype.INTEGER, get=lambda: &#34;4&#34;, settable=True)
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, get=lambda: &#34;4&#34;, datatype=Datatype.INTEGER, settable=True)
     &gt;&gt;&gt; msg = prop.setter_message(&#34;homie/device/node/prop&#34;, &#34;2&#34;)
     &gt;&gt;&gt; msg.topic
     &#39;homie/device/node/prop/set&#39;
