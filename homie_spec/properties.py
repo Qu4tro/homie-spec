@@ -47,7 +47,7 @@ class Property(NamedTuple):
     "Object representation of a property according to the Homie topology"
 
     name: str
-    datatype: Datatype
+    datatype: Datatype = Datatype.STRING
 
     get: Callable[[], str]
     set: Optional[Callable[[str], None]] = None
