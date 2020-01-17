@@ -31,8 +31,8 @@ class Node(NamedTuple):
             yield msg("$properties", ",".join(self.properties.keys()))
 
             for property_name, property_ in self.properties.items():
-                prefix = "/".join((prefix, property_name))
-                yield from property_.messages(prefix=prefix)
+                prop_prefix = "/".join((prefix, property_name))
+                yield from property_.messages(prefix=prop_prefix)
         else:
             yield msg("$properties", "")
 

@@ -58,8 +58,8 @@ class Node(NamedTuple):
             yield msg(&#34;$properties&#34;, &#34;,&#34;.join(self.properties.keys()))
 
             for property_name, property_ in self.properties.items():
-                prefix = &#34;/&#34;.join((prefix, property_name))
-                yield from property_.messages(prefix=prefix)
+                prop_prefix = &#34;/&#34;.join((prefix, property_name))
+                yield from property_.messages(prefix=prop_prefix)
         else:
             yield msg(&#34;$properties&#34;, &#34;&#34;)
 
@@ -161,8 +161,8 @@ Node.properties.__doc__ = &#34;Properties the node exposes, separated by , for m
             yield msg(&#34;$properties&#34;, &#34;,&#34;.join(self.properties.keys()))
 
             for property_name, property_ in self.properties.items():
-                prefix = &#34;/&#34;.join((prefix, property_name))
-                yield from property_.messages(prefix=prefix)
+                prop_prefix = &#34;/&#34;.join((prefix, property_name))
+                yield from property_.messages(prefix=prop_prefix)
         else:
             yield msg(&#34;$properties&#34;, &#34;&#34;)
 
@@ -348,8 +348,8 @@ All its messages are prefixed with its only parameter.</p>
         yield msg(&#34;$properties&#34;, &#34;,&#34;.join(self.properties.keys()))
 
         for property_name, property_ in self.properties.items():
-            prefix = &#34;/&#34;.join((prefix, property_name))
-            yield from property_.messages(prefix=prefix)
+            prop_prefix = &#34;/&#34;.join((prefix, property_name))
+            yield from property_.messages(prefix=prop_prefix)
     else:
         yield msg(&#34;$properties&#34;, &#34;&#34;)</code></pre>
 </details>
