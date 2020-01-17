@@ -98,7 +98,7 @@ class Device(NamedTuple):
 
     def getter_message(self, path: str) -&gt; Message:
         &#34;&#34;&#34;
-        Given a the parameter `path` find its property,
+        Given the parameter `path` find its property,
         call the getter function and returns its respective message.
 
         The `path` parameter takes the format of `{node_name}/{property_name}`.
@@ -127,12 +127,20 @@ class Device(NamedTuple):
         ```
         &#34;&#34;&#34;
         absolute_path = f&#34;{self.prefix}/{self.id}/{path}&#34;.lower()
+
+        # Enumerate all valid topics where the property value should reside.
+        property_topics: Mapping[str, Property] = {
+            f&#34;{self.prefix}/{self.id}/{node_name}/{prop_name}&#34;.lower(): prop
+            for node_name, node in (self.nodes or {}).items()
+            for prop_name, prop in (node.properties or {}).items()
+        }
+
         try:
-            prop = self.property_topics[absolute_path]
+            prop = property_topics[absolute_path]
         except KeyError as err:
             absolute_prefix_len = len(f&#34;{self.prefix}/{self.id}&#34;)
             reachable_paths = [
-                path[absolute_prefix_len:].lower() for x in self.property_topics.keys()
+                path[absolute_prefix_len:].lower() for x in property_topics.keys()
             ]
             raise ValueError(
                 &#34; - &#34;.join(
@@ -145,24 +153,6 @@ class Device(NamedTuple):
 
         message: Message = prop.getter_message(absolute_path)
         return message
-
-    @property
-    def property_topics(self) -&gt; Mapping[str, Property]:
-        &#34;&#34;&#34;
-        Enumerate all valid topics where the property value should reside.
-
-        &gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
-        &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
-        &gt;&gt;&gt; device = Device(&#34;d&#34;, &#34;D&#34;, {&#34;n&#34;: node})
-        &gt;&gt;&gt; device.property_topics[&#39;homie/d/n/p&#39;].get()
-        &#39;4&#39;
-        &#34;&#34;&#34;
-        return {
-            f&#34;{self.prefix}/{self.id}/{node_name}/{prop_name}&#34;.lower(): prop
-            for node_name, node in (self.nodes or {}).items()
-            for prop_name, prop in (node.properties or {}).items()
-        }
 
 
 DEVICE_STATE_DOCS = {
@@ -271,7 +261,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
 
     def getter_message(self, path: str) -&gt; Message:
         &#34;&#34;&#34;
-        Given a the parameter `path` find its property,
+        Given the parameter `path` find its property,
         call the getter function and returns its respective message.
 
         The `path` parameter takes the format of `{node_name}/{property_name}`.
@@ -300,12 +290,20 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
         ```
         &#34;&#34;&#34;
         absolute_path = f&#34;{self.prefix}/{self.id}/{path}&#34;.lower()
+
+        # Enumerate all valid topics where the property value should reside.
+        property_topics: Mapping[str, Property] = {
+            f&#34;{self.prefix}/{self.id}/{node_name}/{prop_name}&#34;.lower(): prop
+            for node_name, node in (self.nodes or {}).items()
+            for prop_name, prop in (node.properties or {}).items()
+        }
+
         try:
-            prop = self.property_topics[absolute_path]
+            prop = property_topics[absolute_path]
         except KeyError as err:
             absolute_prefix_len = len(f&#34;{self.prefix}/{self.id}&#34;)
             reachable_paths = [
-                path[absolute_prefix_len:].lower() for x in self.property_topics.keys()
+                path[absolute_prefix_len:].lower() for x in property_topics.keys()
             ]
             raise ValueError(
                 &#34; - &#34;.join(
@@ -317,25 +315,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
             ) from err
 
         message: Message = prop.getter_message(absolute_path)
-        return message
-
-    @property
-    def property_topics(self) -&gt; Mapping[str, Property]:
-        &#34;&#34;&#34;
-        Enumerate all valid topics where the property value should reside.
-
-        &gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
-        &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
-        &gt;&gt;&gt; device = Device(&#34;d&#34;, &#34;D&#34;, {&#34;n&#34;: node})
-        &gt;&gt;&gt; device.property_topics[&#39;homie/d/n/p&#39;].get()
-        &#39;4&#39;
-        &#34;&#34;&#34;
-        return {
-            f&#34;{self.prefix}/{self.id}/{node_name}/{prop_name}&#34;.lower(): prop
-            for node_name, node in (self.nodes or {}).items()
-            for prop_name, prop in (node.properties or {}).items()
-        }</code></pre>
+        return message</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -367,39 +347,6 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
 <dd>
 <section class="desc"><p>The first topic part. Default is <code>homie</code>.</p></section>
 </dd>
-<dt id="homie_spec.devices.Device.property_topics"><code class="name">var <span class="ident">property_topics</span></code></dt>
-<dd>
-<section class="desc"><p>Enumerate all valid topics where the property value should reside.</p>
-<pre><code>&gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-&gt;&gt;&gt; prop = Property("P", lambda: "4", Datatype.INTEGER)
-&gt;&gt;&gt; node = Node("N", "n", {"p": prop})
-&gt;&gt;&gt; device = Device("d", "D", {"n": node})
-&gt;&gt;&gt; device.property_topics['homie/d/n/p'].get()
-'4'
-</code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def property_topics(self) -&gt; Mapping[str, Property]:
-    &#34;&#34;&#34;
-    Enumerate all valid topics where the property value should reside.
-
-    &gt;&gt;&gt; from homie_spec.properties import Property, Datatype
-    &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
-    &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
-    &gt;&gt;&gt; device = Device(&#34;d&#34;, &#34;D&#34;, {&#34;n&#34;: node})
-    &gt;&gt;&gt; device.property_topics[&#39;homie/d/n/p&#39;].get()
-    &#39;4&#39;
-    &#34;&#34;&#34;
-    return {
-        f&#34;{self.prefix}/{self.id}/{node_name}/{prop_name}&#34;.lower(): prop
-        for node_name, node in (self.nodes or {}).items()
-        for prop_name, prop in (node.properties or {}).items()
-    }</code></pre>
-</details>
-</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
@@ -407,7 +354,7 @@ def property_topics(self) -&gt; Mapping[str, Property]:
 <span>def <span class="ident">getter_message</span></span>(<span>self, path: str) -> <a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a></span>
 </code></dt>
 <dd>
-<section class="desc"><p>Given a the parameter <code>path</code> find its property,
+<section class="desc"><p>Given the parameter <code>path</code> find its property,
 call the getter function and returns its respective message.</p>
 <p>The <code>path</code> parameter takes the format of <code>{node_name}/{property_name}</code>.</p>
 <p>All its messages are prefixed with the device prefix and the device id.</p>
@@ -438,7 +385,7 @@ ValueError: Unreachable path 'n/p' - Valid property paths are []
 </summary>
 <pre><code class="python">def getter_message(self, path: str) -&gt; Message:
     &#34;&#34;&#34;
-    Given a the parameter `path` find its property,
+    Given the parameter `path` find its property,
     call the getter function and returns its respective message.
 
     The `path` parameter takes the format of `{node_name}/{property_name}`.
@@ -467,12 +414,20 @@ ValueError: Unreachable path 'n/p' - Valid property paths are []
     ```
     &#34;&#34;&#34;
     absolute_path = f&#34;{self.prefix}/{self.id}/{path}&#34;.lower()
+
+    # Enumerate all valid topics where the property value should reside.
+    property_topics: Mapping[str, Property] = {
+        f&#34;{self.prefix}/{self.id}/{node_name}/{prop_name}&#34;.lower(): prop
+        for node_name, node in (self.nodes or {}).items()
+        for prop_name, prop in (node.properties or {}).items()
+    }
+
     try:
-        prop = self.property_topics[absolute_path]
+        prop = property_topics[absolute_path]
     except KeyError as err:
         absolute_prefix_len = len(f&#34;{self.prefix}/{self.id}&#34;)
         reachable_paths = [
-            path[absolute_prefix_len:].lower() for x in self.property_topics.keys()
+            path[absolute_prefix_len:].lower() for x in property_topics.keys()
         ]
         raise ValueError(
             &#34; - &#34;.join(
@@ -634,7 +589,6 @@ All its messages are prefixed with the device prefix and the device id.</p>
 <li><code><a title="homie_spec.devices.Device.name" href="#homie_spec.devices.Device.name">name</a></code></li>
 <li><code><a title="homie_spec.devices.Device.nodes" href="#homie_spec.devices.Device.nodes">nodes</a></code></li>
 <li><code><a title="homie_spec.devices.Device.prefix" href="#homie_spec.devices.Device.prefix">prefix</a></code></li>
-<li><code><a title="homie_spec.devices.Device.property_topics" href="#homie_spec.devices.Device.property_topics">property_topics</a></code></li>
 </ul>
 </li>
 <li>

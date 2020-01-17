@@ -5,7 +5,7 @@ test tests .coverage:
 	tox -e py38
 
 test-watch tests-watch watch ptw:
-	poetry run ptw -- --mypy
+	poetry run ptw -- --mypy --doctest-modules
 
 cov-report: .coverage
 	poetry run coverage report -m

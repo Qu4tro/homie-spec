@@ -63,6 +63,54 @@ class Node(NamedTuple):
         else:
             yield msg(&#34;$properties&#34;, &#34;&#34;)
 
+    def getter_message(self, prop_name: str, prefix: str = &#34;&#34;) -&gt; Message:
+        &#34;&#34;&#34;
+        Returns the message corresponding to the getter message
+        of a given property.
+
+        The property is identified by the parameter `prop_name`.
+
+        Accepts a prefix that is prepended to the message topic.
+
+        &gt;&gt;&gt; from homie_spec.properties import Datatype, Property
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
+        &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
+        &gt;&gt;&gt; msg = node.getter_message(&#34;p&#34;, prefix=&#34;homie/d/n&#34;)
+        &gt;&gt;&gt; msg.topic
+        &#39;homie/d/n/p&#39;
+        &gt;&gt;&gt; msg.payload
+        &#39;4&#39;
+
+        Raises a ValueError when the property is not among the
+        nodes properties.
+
+        ```
+
+        &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;).getter_message(&#34;p&#34;)
+        Traceback (most recent call last):
+        ...
+        ValueError: Node has no properties
+
+        ```
+        &#34;&#34;&#34;
+        prop_name = prop_name.lower()
+        if self.properties is None:
+            raise ValueError(&#34;Node has no properties&#34;)
+
+        prop = self.properties.get(prop_name.lower())
+        if prop is None:
+            raise ValueError(
+                &#34; - &#34;.join(
+                    [
+                        f&#34;Property name not found: &#39;{prop_name}&#39;&#34;,
+                        f&#34;Valid property paths are {self.properties.keys()}&#34;,
+                    ]
+                )
+            )
+
+        message: Message = prop.getter_message(f&#34;{prefix}/{prop_name}&#34;)
+        return message
+
 
 Node.name.__doc__ = &#34;Friendly name of the node.&#34;
 Node.typeOf.__doc__ = &#34;Type of the node.&#34;
@@ -116,7 +164,55 @@ Node.properties.__doc__ = &#34;Properties the node exposes, separated by , for m
                 prefix = &#34;/&#34;.join((prefix, property_name))
                 yield from property_.messages(prefix=prefix)
         else:
-            yield msg(&#34;$properties&#34;, &#34;&#34;)</code></pre>
+            yield msg(&#34;$properties&#34;, &#34;&#34;)
+
+    def getter_message(self, prop_name: str, prefix: str = &#34;&#34;) -&gt; Message:
+        &#34;&#34;&#34;
+        Returns the message corresponding to the getter message
+        of a given property.
+
+        The property is identified by the parameter `prop_name`.
+
+        Accepts a prefix that is prepended to the message topic.
+
+        &gt;&gt;&gt; from homie_spec.properties import Datatype, Property
+        &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
+        &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
+        &gt;&gt;&gt; msg = node.getter_message(&#34;p&#34;, prefix=&#34;homie/d/n&#34;)
+        &gt;&gt;&gt; msg.topic
+        &#39;homie/d/n/p&#39;
+        &gt;&gt;&gt; msg.payload
+        &#39;4&#39;
+
+        Raises a ValueError when the property is not among the
+        nodes properties.
+
+        ```
+
+        &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;).getter_message(&#34;p&#34;)
+        Traceback (most recent call last):
+        ...
+        ValueError: Node has no properties
+
+        ```
+        &#34;&#34;&#34;
+        prop_name = prop_name.lower()
+        if self.properties is None:
+            raise ValueError(&#34;Node has no properties&#34;)
+
+        prop = self.properties.get(prop_name.lower())
+        if prop is None:
+            raise ValueError(
+                &#34; - &#34;.join(
+                    [
+                        f&#34;Property name not found: &#39;{prop_name}&#39;&#34;,
+                        f&#34;Valid property paths are {self.properties.keys()}&#34;,
+                    ]
+                )
+            )
+
+        message: Message = prop.getter_message(f&#34;{prefix}/{prop_name}&#34;)
+        return message</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -139,6 +235,88 @@ Node.properties.__doc__ = &#34;Properties the node exposes, separated by , for m
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="homie_spec.nodes.Node.getter_message"><code class="name flex">
+<span>def <span class="ident">getter_message</span></span>(<span>self, prop_name: str, prefix: str = '') -> <a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the message corresponding to the getter message
+of a given property.</p>
+<p>The property is identified by the parameter <code>prop_name</code>.</p>
+<p>Accepts a prefix that is prepended to the message topic.</p>
+<pre><code>&gt;&gt;&gt; from homie_spec.properties import Datatype, Property
+&gt;&gt;&gt; prop = Property("P", lambda: "4", Datatype.INTEGER)
+&gt;&gt;&gt; node = Node("N", "n", {"p": prop})
+&gt;&gt;&gt; msg = node.getter_message("p", prefix="homie/d/n")
+&gt;&gt;&gt; msg.topic
+'homie/d/n/p'
+&gt;&gt;&gt; msg.payload
+'4'
+</code></pre>
+<p>Raises a ValueError when the property is not among the
+nodes properties.</p>
+<pre><code>
+
+    &gt;&gt;&gt; node = Node(&quot;N&quot;, &quot;n&quot;).getter_message(&quot;p&quot;)
+    Traceback (most recent call last):
+
+
+...
+ValueError: Node has no properties
+
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getter_message(self, prop_name: str, prefix: str = &#34;&#34;) -&gt; Message:
+    &#34;&#34;&#34;
+    Returns the message corresponding to the getter message
+    of a given property.
+
+    The property is identified by the parameter `prop_name`.
+
+    Accepts a prefix that is prepended to the message topic.
+
+    &gt;&gt;&gt; from homie_spec.properties import Datatype, Property
+    &gt;&gt;&gt; prop = Property(&#34;P&#34;, lambda: &#34;4&#34;, Datatype.INTEGER)
+    &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;, {&#34;p&#34;: prop})
+    &gt;&gt;&gt; msg = node.getter_message(&#34;p&#34;, prefix=&#34;homie/d/n&#34;)
+    &gt;&gt;&gt; msg.topic
+    &#39;homie/d/n/p&#39;
+    &gt;&gt;&gt; msg.payload
+    &#39;4&#39;
+
+    Raises a ValueError when the property is not among the
+    nodes properties.
+
+    ```
+
+    &gt;&gt;&gt; node = Node(&#34;N&#34;, &#34;n&#34;).getter_message(&#34;p&#34;)
+    Traceback (most recent call last):
+    ...
+    ValueError: Node has no properties
+
+    ```
+    &#34;&#34;&#34;
+    prop_name = prop_name.lower()
+    if self.properties is None:
+        raise ValueError(&#34;Node has no properties&#34;)
+
+    prop = self.properties.get(prop_name.lower())
+    if prop is None:
+        raise ValueError(
+            &#34; - &#34;.join(
+                [
+                    f&#34;Property name not found: &#39;{prop_name}&#39;&#34;,
+                    f&#34;Valid property paths are {self.properties.keys()}&#34;,
+                ]
+            )
+        )
+
+    message: Message = prop.getter_message(f&#34;{prefix}/{prop_name}&#34;)
+    return message</code></pre>
+</details>
+</dd>
 <dt id="homie_spec.nodes.Node.messages"><code class="name flex">
 <span>def <span class="ident">messages</span></span>(<span>self, prefix: str) -> Iterable[<a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a>]</span>
 </code></dt>
@@ -197,6 +375,7 @@ All its messages are prefixed with its only parameter.</p>
 <li>
 <h4><code><a title="homie_spec.nodes.Node" href="#homie_spec.nodes.Node">Node</a></code></h4>
 <ul class="">
+<li><code><a title="homie_spec.nodes.Node.getter_message" href="#homie_spec.nodes.Node.getter_message">getter_message</a></code></li>
 <li><code><a title="homie_spec.nodes.Node.messages" href="#homie_spec.nodes.Node.messages">messages</a></code></li>
 <li><code><a title="homie_spec.nodes.Node.name" href="#homie_spec.nodes.Node.name">name</a></code></li>
 <li><code><a title="homie_spec.nodes.Node.properties" href="#homie_spec.nodes.Node.properties">properties</a></code></li>

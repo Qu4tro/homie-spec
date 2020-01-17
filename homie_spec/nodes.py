@@ -36,6 +36,54 @@ class Node(NamedTuple):
         else:
             yield msg("$properties", "")
 
+    def getter_message(self, prop_name: str, prefix: str = "") -> Message:
+        """
+        Returns the message corresponding to the getter message
+        of a given property.
+
+        The property is identified by the parameter `prop_name`.
+
+        Accepts a prefix that is prepended to the message topic.
+
+        >>> from homie_spec.properties import Datatype, Property
+        >>> prop = Property("P", lambda: "4", Datatype.INTEGER)
+        >>> node = Node("N", "n", {"p": prop})
+        >>> msg = node.getter_message("p", prefix="homie/d/n")
+        >>> msg.topic
+        'homie/d/n/p'
+        >>> msg.payload
+        '4'
+
+        Raises a ValueError when the property is not among the
+        nodes properties.
+
+        ```
+
+        >>> node = Node("N", "n").getter_message("p")
+        Traceback (most recent call last):
+        ...
+        ValueError: Node has no properties
+
+        ```
+        """
+        prop_name = prop_name.lower()
+        if self.properties is None:
+            raise ValueError("Node has no properties")
+
+        prop = self.properties.get(prop_name.lower())
+        if prop is None:
+            raise ValueError(
+                " - ".join(
+                    [
+                        f"Property name not found: '{prop_name}'",
+                        f"Valid property paths are {self.properties.keys()}",
+                    ]
+                )
+            )
+
+        message: Message = prop.getter_message(f"{prefix}/{prop_name}")
+        return message
+
 
 Node.name.__doc__ = "Friendly name of the node."
 Node.typeOf.__doc__ = "Type of the node."

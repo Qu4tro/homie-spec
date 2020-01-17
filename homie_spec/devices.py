@@ -71,7 +71,7 @@ class Device(NamedTuple):
 
     def getter_message(self, path: str) -> Message:
         """
-        Given a the parameter `path` find its property,
+        Given the parameter `path` find its property,
         call the getter function and returns its respective message.
 
         The `path` parameter takes the format of `{node_name}/{property_name}`.
@@ -100,12 +100,20 @@ class Device(NamedTuple):
         ```
         """
         absolute_path = f"{self.prefix}/{self.id}/{path}".lower()
+
+        # Enumerate all valid topics where the property value should reside.
+        property_topics: Mapping[str, Property] = {
+            f"{self.prefix}/{self.id}/{node_name}/{prop_name}".lower(): prop
+            for node_name, node in (self.nodes or {}).items()
+            for prop_name, prop in (node.properties or {}).items()
+        }
+
         try:
-            prop = self.property_topics[absolute_path]
+            prop = property_topics[absolute_path]
         except KeyError as err:
             absolute_prefix_len = len(f"{self.prefix}/{self.id}")
             reachable_paths = [
-                path[absolute_prefix_len:].lower() for x in self.property_topics.keys()
+                path[absolute_prefix_len:].lower() for x in property_topics.keys()
             ]
             raise ValueError(
                 " - ".join(
@@ -118,24 +126,6 @@ class Device(NamedTuple):
 
         message: Message = prop.getter_message(absolute_path)
         return message
-
-    @property
-    def property_topics(self) -> Mapping[str, Property]:
-        """
-        Enumerate all valid topics where the property value should reside.
-
-        >>> from homie_spec.properties import Property, Datatype
-        >>> prop = Property("P", lambda: "4", Datatype.INTEGER)
-        >>> node = Node("N", "n", {"p": prop})
-        >>> device = Device("d", "D", {"n": node})
-        >>> device.property_topics['homie/d/n/p'].get()
-        '4'
-        """
-        return {
-            f"{self.prefix}/{self.id}/{node_name}/{prop_name}".lower(): prop
-            for node_name, node in (self.nodes or {}).items()
-            for prop_name, prop in (node.properties or {}).items()
-        }
 
 
 DEVICE_STATE_DOCS = {

@@ -89,13 +89,10 @@ def test_device_messages(device: Device) -> None:
                 path = f"{node_name}/{prop_name}"
                 msg = device.getter_message(path)
 
-                assert msg.topic in device.property_topics
                 assert msg.topic == f"{prefix}/{node_name}/{prop_name}".lower()
                 assert msg.payload == str(prop.get())
                 assert msg.qos == 1
                 assert msg.retained == prop.retained
-
-        assert len(device.property_topics) == n_properties
 
         return None
 

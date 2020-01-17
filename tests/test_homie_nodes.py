@@ -43,6 +43,23 @@ def test_generic_node_messages(node: Node, prefix: str) -> None:
         else:
             assert msg.exists(topic_parts=[prefix, "$properties"], matches_payload="")
 
+    def getter_message_match() -> None:
+        "Assert that the getter messages of all properties matches"
+
+        if not node.properties:
+            return None
+
+        for prop_name, prop in node.properties.items():
+            path = f"{prefix}/{node.name}"
+            msg = node.getter_message(prop_name, prefix=path)
+
+            assert msg.topic == f"{prefix}/{node.name}/{prop_name}".lower()
+            assert msg.payload == str(prop.get())
+            assert msg.qos == 1
+            assert msg.retained == prop.retained
+
+        return None
+
     def properties_valid() -> None:
         "Call test_generic_property_messages to test children properties"
         check_property = (
@@ -55,6 +72,7 @@ def test_generic_node_messages(node: Node, prefix: str) -> None:
     number_of_node_messages_match()
     message_prefix_match()
     required_attributes_match()
+    getter_message_match()
     properties_valid()
 
 
