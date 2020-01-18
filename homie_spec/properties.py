@@ -97,8 +97,9 @@ class Property(NamedTuple):
         '4'
         """
         msg = partial(Message, prefix=prefix)
+        retained = True if self.retained is None else self.retained
 
-        return msg("", self.get(), retained=self.retained)
+        return msg("", self.get(), retained=retained)
 
     def setter_message(self, prefix: str, payload: str = "") -> Optional[Message]:
         """

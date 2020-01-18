@@ -124,8 +124,9 @@ class Property(NamedTuple):
         &#39;4&#39;
         &#34;&#34;&#34;
         msg = partial(Message, prefix=prefix)
+        retained = True if self.retained is None else self.retained
 
-        return msg(&#34;&#34;, self.get(), retained=self.retained)
+        return msg(&#34;&#34;, self.get(), retained=retained)
 
     def setter_message(self, prefix: str, payload: str = &#34;&#34;) -&gt; Optional[Message]:
         &#34;&#34;&#34;
@@ -323,8 +324,9 @@ RECOMMENDED_UNITS = [
         &#39;4&#39;
         &#34;&#34;&#34;
         msg = partial(Message, prefix=prefix)
+        retained = True if self.retained is None else self.retained
 
-        return msg(&#34;&#34;, self.get(), retained=self.retained)
+        return msg(&#34;&#34;, self.get(), retained=retained)
 
     def setter_message(self, prefix: str, payload: str = &#34;&#34;) -&gt; Optional[Message]:
         &#34;&#34;&#34;
@@ -418,8 +420,9 @@ RECOMMENDED_UNITS = [
     &#39;4&#39;
     &#34;&#34;&#34;
     msg = partial(Message, prefix=prefix)
+    retained = True if self.retained is None else self.retained
 
-    return msg(&#34;&#34;, self.get(), retained=self.retained)</code></pre>
+    return msg(&#34;&#34;, self.get(), retained=retained)</code></pre>
 </details>
 </dd>
 <dt id="homie_spec.properties.Property.messages"><code class="name flex">
