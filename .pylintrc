@@ -4,4 +4,4 @@ disable=bad-continuation,
 
 [DESIGN]
 # Maximum number of arguments for function / method.
-max-args=6
+max-args=7

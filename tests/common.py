@@ -39,16 +39,21 @@ class MessagesAssert(NamedTuple):
         """
         composed_topic = self.compose_topic(topic_parts)
 
-        same_topic_messages = [
+        topic_matching_messages = (
             message for message in self.messages if message.topic == composed_topic
-        ]
-        if len(same_topic_messages) == 0:
+        )
+        try:
+            first_match = next(topic_matching_messages)
+        except StopIteration:
             return optional
 
-        if unique and len(same_topic_messages) > 1:
-            return False
+        if unique:
+            try:
+                next(topic_matching_messages)
+                return False
+            except StopIteration:
+                ...
 
-        first_match = same_topic_messages[0]
         content_match = True
         if retained is not None:
             content_match &= retained == first_match.retained
