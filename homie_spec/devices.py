@@ -1,7 +1,7 @@
 "Exposes the Device class and DeviceState"
 
 from enum import Enum, auto
-from typing import NamedTuple, Optional, Mapping, Iterable
+from typing import NamedTuple, Optional, Mapping, Iterator
 from functools import partial
 
 from homie_spec.messages import Message
@@ -33,7 +33,7 @@ class Device(NamedTuple):
     implementation: str = "homie-spec"
     prefix: str = "homie"
 
-    def messages(self) -> Iterable[Message]:
+    def messages(self) -> Iterator[Message]:
         """
         Yields the messages from the device attributes and from its nodes.
         All its messages are prefixed with the device prefix and the device id.
@@ -113,7 +113,7 @@ class Device(NamedTuple):
         except KeyError as err:
             absolute_prefix_len = len(f"{self.prefix}/{self.id}")
             reachable_paths = [
-                path[absolute_prefix_len:].lower() for x in property_topics.keys()
+                topic[absolute_prefix_len:].lower() for topic in property_topics.keys()
             ]
             raise ValueError(
                 " - ".join(
