@@ -10,8 +10,8 @@ import pytest  # type: ignore
 @pytest.fixture(scope="session", autouse=True)
 def load_env() -> None:
     "Fixtures to load the hypothesis profile inside for all tests"
-    settings.register_profile("ci", max_examples=300, deadline=None)
+    settings.register_profile("ci", max_examples=150, deadline=None)
     settings.register_profile(
-        "dev", max_examples=100, deadline=timedelta(milliseconds=500)
+        "dev", max_examples=10, deadline=timedelta(milliseconds=500)
     )
     settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "dev"))
