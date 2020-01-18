@@ -90,6 +90,7 @@ def nodes(draw: Drawable) -> Node:
                 values=one_of(
                     properties(), boolean_properties(), percentage_properties()
                 ),
+                max_size=5,
             )
         ),
     )
@@ -103,5 +104,5 @@ def devices(draw: Drawable) -> Device:
         name=draw(text()),
         implementation=draw(text()),
         prefix=draw(text()),
-        nodes=draw(dictionaries(keys=uuids().map(str), values=nodes())),
+        nodes=draw(dictionaries(keys=uuids().map(str), values=nodes(), max_size=5)),
     )
