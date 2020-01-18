@@ -28,7 +28,7 @@
 <pre><code class="python">&#34;Exposes the Device class and DeviceState&#34;
 
 from enum import Enum, auto
-from typing import NamedTuple, Optional, Mapping, Iterable
+from typing import NamedTuple, Optional, Mapping, Iterator
 from functools import partial
 
 from homie_spec.messages import Message
@@ -60,7 +60,7 @@ class Device(NamedTuple):
     implementation: str = &#34;homie-spec&#34;
     prefix: str = &#34;homie&#34;
 
-    def messages(self) -&gt; Iterable[Message]:
+    def messages(self) -&gt; Iterator[Message]:
         &#34;&#34;&#34;
         Yields the messages from the device attributes and from its nodes.
         All its messages are prefixed with the device prefix and the device id.
@@ -140,7 +140,7 @@ class Device(NamedTuple):
         except KeyError as err:
             absolute_prefix_len = len(f&#34;{self.prefix}/{self.id}&#34;)
             reachable_paths = [
-                path[absolute_prefix_len:].lower() for x in property_topics.keys()
+                topic[absolute_prefix_len:].lower() for topic in property_topics.keys()
             ]
             raise ValueError(
                 &#34; - &#34;.join(
@@ -223,7 +223,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
     implementation: str = &#34;homie-spec&#34;
     prefix: str = &#34;homie&#34;
 
-    def messages(self) -&gt; Iterable[Message]:
+    def messages(self) -&gt; Iterator[Message]:
         &#34;&#34;&#34;
         Yields the messages from the device attributes and from its nodes.
         All its messages are prefixed with the device prefix and the device id.
@@ -303,7 +303,7 @@ __pdoc__ = {**DEVICE_STATE_DOCS, **DEVICE_DOCS}</code></pre>
         except KeyError as err:
             absolute_prefix_len = len(f&#34;{self.prefix}/{self.id}&#34;)
             reachable_paths = [
-                path[absolute_prefix_len:].lower() for x in property_topics.keys()
+                topic[absolute_prefix_len:].lower() for topic in property_topics.keys()
             ]
             raise ValueError(
                 &#34; - &#34;.join(
@@ -427,7 +427,7 @@ ValueError: Unreachable path 'n/p' - Valid property paths are []
     except KeyError as err:
         absolute_prefix_len = len(f&#34;{self.prefix}/{self.id}&#34;)
         reachable_paths = [
-            path[absolute_prefix_len:].lower() for x in property_topics.keys()
+            topic[absolute_prefix_len:].lower() for topic in property_topics.keys()
         ]
         raise ValueError(
             &#34; - &#34;.join(
@@ -443,7 +443,7 @@ ValueError: Unreachable path 'n/p' - Valid property paths are []
 </details>
 </dd>
 <dt id="homie_spec.devices.Device.messages"><code class="name flex">
-<span>def <span class="ident">messages</span></span>(<span>self) -> Iterable[<a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a>]</span>
+<span>def <span class="ident">messages</span></span>(<span>self) -> Iterator[<a title="homie_spec.messages.Message" href="messages.html#homie_spec.messages.Message">Message</a>]</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Yields the messages from the device attributes and from its nodes.
@@ -458,7 +458,7 @@ All its messages are prefixed with the device prefix and the device id.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def messages(self) -&gt; Iterable[Message]:
+<pre><code class="python">def messages(self) -&gt; Iterator[Message]:
     &#34;&#34;&#34;
     Yields the messages from the device attributes and from its nodes.
     All its messages are prefixed with the device prefix and the device id.
