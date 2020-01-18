@@ -14,6 +14,7 @@ class MessagesAssert(NamedTuple):
         topic_parts: List[str],
         matches_payload: Optional[str] = None,
         matches_substring: Optional[str] = None,
+        retained: Optional[bool] = None,
         optional: bool = False,
         unique: bool = True,
     ) -> bool:
@@ -26,6 +27,9 @@ class MessagesAssert(NamedTuple):
 
         If `matches_substring` is provided, check with the *first* message
         with the matching topic, if the payload contains said substring.
+
+        If `retained` is provided, check with the *first* message
+        with the matching topic, if the payload is retained
 
         If `optional` is True (default False),
         allow for the topic to be missing.

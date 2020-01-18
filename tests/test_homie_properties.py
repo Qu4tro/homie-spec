@@ -68,7 +68,7 @@ def test_generic_property_messages(prop: Property, prefix: str) -> None:
     def getter_message_match() -> None:
         "Assert that the getter message has the expected topic and payload"
         assert MessagesAssert(messages=[prop.getter_message(prefix)]).exists(
-            topic_parts=[prefix], matches_payload=prop.get()
+            topic_parts=[prefix], matches_payload=prop.get(), retained=prop.retained
         )
 
     def setter_message_match() -> None:
