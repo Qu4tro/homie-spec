@@ -1,7 +1,5 @@
 "homie-spec is a Python library that handles the v4 Homie Convention."
 
-__version__: str = "0.3.4"
-
 from homie_spec.devices import Device  # noqa
 from homie_spec.nodes import Node  # noqa
 from homie_spec.properties import Property  # noqa
