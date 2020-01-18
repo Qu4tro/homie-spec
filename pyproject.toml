@@ -10,6 +10,9 @@ authors = ["Xavier Francisco <xavier.n.francisco@gmail.com>"]
 license = 'MIT'
 readme = 'README.md'
 keywords = ["homie", "mqtt"]
+homepage = "https://qu4tro.github.io/homie-spec/"
+documentation = "https://qu4tro.github.io/homie-spec/"
+repository = "https://github.com/Qu4tro/homie-spec/"
 
 [tool.poetry.dependencies]
 python = "^3.6"
