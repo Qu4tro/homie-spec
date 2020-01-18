@@ -12,7 +12,7 @@ class MessagesAssert(NamedTuple):
     def exists(
         self,
         topic_parts: List[str],
-        matches_payload: Optional[str] = None,
+        exact_payload: Optional[str] = None,
         matches_substring: Optional[str] = None,
         retained: Optional[bool] = None,
         optional: bool = False,
@@ -22,7 +22,7 @@ class MessagesAssert(NamedTuple):
         Given a list of topic parts, compose it into a proper topic
         and assert if that topic appears in the message list only once.
 
-        If `matches_payload` is provided, check with the *first* message
+        If `exact_payload` is provided, check with the *first* message
         with the matching topic, if the payload also matches.
 
         If `matches_substring` is provided, check with the *first* message
@@ -38,22 +38,25 @@ class MessagesAssert(NamedTuple):
         no other message has the same topic.
         """
         composed_topic = self.compose_topic(topic_parts)
-        found_once = False
-        for message in self.messages:
-            if message.topic == composed_topic:
-                if found_once and unique:
-                    return False
 
-                found_once = True
-                if matches_payload is not None:
-                    return message.payload == matches_payload
-                if matches_substring is not None:
-                    return matches_substring in message.payload
+        same_topic_messages = [
+            message for message in self.messages if message.topic == composed_topic
+        ]
+        if len(same_topic_messages) == 0:
+            return optional
 
-        if not optional and not found_once:
+        if unique and len(same_topic_messages) > 1:
             return False
 
-        return True
+        first_match = same_topic_messages[0]
+        content_match = True
+        if retained is not None:
+            content_match &= retained == first_match.retained
+        if exact_payload is not None:
+            content_match &= exact_payload == first_match.payload
+        if matches_substring is not None:
+            content_match &= matches_substring in first_match.payload
+        return content_match
 
     @staticmethod
     def compose_topic(topic_parts: List[str]) -> str:

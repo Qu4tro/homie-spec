@@ -33,15 +33,15 @@ def test_generic_node_messages(node: Node, prefix: str) -> None:
         Assert that all required attributes are present
         and that their payload match the expected value
         """
-        assert msg.exists(topic_parts=[prefix, "$name"], matches_payload=node.name)
-        assert msg.exists(topic_parts=[prefix, "$type"], matches_payload=node.typeOf)
+        assert msg.exists(topic_parts=[prefix, "$name"], exact_payload=node.name)
+        assert msg.exists(topic_parts=[prefix, "$type"], exact_payload=node.typeOf)
         if node.properties:
             for prop in node.properties:
                 assert msg.exists(
                     topic_parts=[prefix, "$properties"], matches_substring=prop
                 )
         else:
-            assert msg.exists(topic_parts=[prefix, "$properties"], matches_payload="")
+            assert msg.exists(topic_parts=[prefix, "$properties"], exact_payload="")
 
     def getter_message_match() -> None:
         "Assert that the getter messages of all properties matches"

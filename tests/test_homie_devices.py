@@ -40,17 +40,17 @@ def test_device_messages(device: Device) -> None:
         Assert that all required attributes are present
         and that their payload match the expected value
         """
-        assert msg.exists(topic_parts=[prefix, "$name"], matches_payload=device.name)
-        assert msg.exists(topic_parts=[prefix, "$homie"], matches_payload=HOMIE_VERSION)
+        assert msg.exists(topic_parts=[prefix, "$name"], exact_payload=device.name)
+        assert msg.exists(topic_parts=[prefix, "$homie"], exact_payload=HOMIE_VERSION)
         assert msg.exists(
-            topic_parts=[prefix, "$implementation"], matches_payload=device.implementation
+            topic_parts=[prefix, "$implementation"], exact_payload=device.implementation
         )
 
         if device.nodes:
             for node in device.nodes:
                 assert msg.exists(topic_parts=[prefix, "$nodes"], matches_substring=node)
         else:
-            assert msg.exists(topic_parts=[prefix, "$nodes"], matches_payload="")
+            assert msg.exists(topic_parts=[prefix, "$nodes"], exact_payload="")
 
     def optional_attributes_match() -> None:
         """
@@ -59,7 +59,7 @@ def test_device_messages(device: Device) -> None:
         """
         assert msg.exists(
             topic_parts=[prefix, "$extensions"],
-            matches_payload=str(device.extensions),
+            exact_payload=str(device.extensions),
             optional=True,
         )
 
@@ -70,7 +70,7 @@ def test_device_messages(device: Device) -> None:
         assert messages[-1].topic == f"{prefix}/$state"
         assert messages[-1].payload == "ready"
         assert msg.exists(
-            topic_parts=[prefix, "$state"], matches_payload="init", unique=False
+            topic_parts=[prefix, "$state"], exact_payload="init", unique=False
         )
 
     def getter_message_match() -> None:

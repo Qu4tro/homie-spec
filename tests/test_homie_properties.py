@@ -35,10 +35,10 @@ def test_generic_property_messages(prop: Property, prefix: str) -> None:
         Assert that all required attributes are present
         and that their payload match the expected value
         """
-        assert msg.exists(topic_parts=[prefix, "$name"], matches_payload=prop.name)
+        assert msg.exists(topic_parts=[prefix, "$name"], exact_payload=prop.name)
 
         datatype = prop.datatype.name.lower()
-        assert msg.exists(topic_parts=[prefix, "$datatype"], matches_payload=datatype)
+        assert msg.exists(topic_parts=[prefix, "$datatype"], exact_payload=datatype)
         assert datatype in ["integer", "float", "boolean", "string", "enum", "color"]
 
     def optional_properties_attributes_match() -> None:
@@ -48,27 +48,27 @@ def test_generic_property_messages(prop: Property, prefix: str) -> None:
         """
         assert msg.exists(
             topic_parts=[prefix, "$retained"],
-            matches_payload=str(prop.retained).lower(),
+            exact_payload=str(prop.retained).lower(),
             optional=True,
         )
 
         assert msg.exists(
             topic_parts=[prefix, "$settable"],
-            matches_payload=str(prop.settable).lower(),
+            exact_payload=str(prop.settable).lower(),
             optional=True,
         )
 
         assert msg.exists(
-            topic_parts=[prefix, "$unit"], matches_payload=prop.unit, optional=True
+            topic_parts=[prefix, "$unit"], exact_payload=prop.unit, optional=True
         )
         assert msg.exists(
-            topic_parts=[prefix, "$format"], matches_payload=prop.formatOf, optional=True
+            topic_parts=[prefix, "$format"], exact_payload=prop.formatOf, optional=True
         )
 
     def getter_message_match() -> None:
         "Assert that the getter message has the expected topic and payload"
         assert MessagesAssert(messages=[prop.getter_message(prefix)]).exists(
-            topic_parts=[prefix], matches_payload=prop.get(), retained=prop.retained
+            topic_parts=[prefix], exact_payload=prop.get(), retained=prop.retained
         )
 
     def setter_message_match() -> None:
@@ -79,7 +79,7 @@ def test_generic_property_messages(prop: Property, prefix: str) -> None:
             assert message is not None
             if not (
                 MessagesAssert(messages=[message]).exists(
-                    topic_parts=[prefix, "set"], matches_payload=payload
+                    topic_parts=[prefix, "set"], exact_payload=payload
                 )
             ):
                 __import__("pdb").set_trace()
