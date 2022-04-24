@@ -4,6 +4,7 @@ from hypothesis import given, example
 from hypothesis.strategies import text
 
 from homie_spec.nodes import Node
+from homie_spec.properties import Datatype, Property
 
 from .generic import nodes
 from .common import MessagesAssert
@@ -82,3 +83,38 @@ def node_messages_count(node: Node) -> int:
     if node.properties:
         count += sum(property_message_count(prop) for prop in node.properties.values())
     return count
+
+
+prop_light = Property(name="Mock light", datatype=Datatype.BOOLEAN, get=None)
+prop_color = Property(name="Mock color", datatype=Datatype.COLOR, get=None)
+
+@given(nodes(), text())
+@example(node=Node(name="Mock Node", typeOf="mock",
+                   properties={'light':prop_light, 'color':prop_color}), prefix="/homie/device")
+def test_property_path_inside_node(node: Node, prefix:str) -> None:
+    """check if the node porperties have the correct path
+
+    expects a certain amount of messages
+    for the path of the given properties and path in lower case
+    """
+    prefix = prefix.lower()
+    messages = list(node.messages(prefix))
+
+    props = []
+    #this test makes only sense if the node has properties
+    if node.properties:
+        for (prop, contents) in node.properties.items():
+            props.append({
+                'count' : 0,
+                'path' : f"{prefix}/{prop}",
+                'obj' : contents
+                })
+
+        for msg in messages:
+            for prop in props:
+                if msg.prefix.startswith(prop['path']):
+                    prop['count'] += 1
+
+        for prop in props:
+            print(f"current path: {prop['path']}")
+            assert prop['count'] == property_message_count(prop=prop['obj'])

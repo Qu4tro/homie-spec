@@ -62,8 +62,8 @@ class Device(NamedTuple):
             yield msg("$nodes", payload_nodes)
 
             for node_name, node in self.nodes.items():
-                prefix = "/".join((prefix, node_name))
-                yield from node.messages(prefix=prefix)
+                node_prefix = "/".join((prefix, node_name))
+                yield from node.messages(prefix=node_prefix)
         else:
             yield msg("$nodes", "")
 
