@@ -3,6 +3,7 @@
 from hypothesis import given, example
 
 from homie_spec.devices import Device, HOMIE_VERSION
+from homie_spec.nodes import Node
 
 from .generic import devices
 from .common import MessagesAssert
@@ -11,6 +12,10 @@ from .test_homie_nodes import test_generic_node_messages, node_messages_count
 
 EXAMPLE_DEVICE = Device(id="mock", name="Mock Device")
 
+NODE1 = Node(name='light', typeOf='switch')
+NODE2 = Node(name='socket', typeOf='power')
+EXAMPLE_DEVICE_W_NODES = Device(id="mock", name="Mock Device",
+                                nodes={'light':NODE1, 'socket':NODE2})
 
 @given(devices())
 @example(device=EXAMPLE_DEVICE)
@@ -122,3 +127,33 @@ def number_of_messages_for_device(device: Device) -> int:
     if device.nodes:
         count += sum(node_messages_count(node) for node in device.nodes.values())
     return count
+
+@given(devices())
+@example(device=EXAMPLE_DEVICE_W_NODES)
+def test_node_path_inside_device(device: Device) -> None:
+    """check if the device nodes have the correct path
+
+    expects a certain amount of messages
+    for the path of the given nodes
+    """
+    prefix = (device.prefix + "/" + device.id)
+    messages = list(device.messages())
+
+    nodes = []
+    #this test makes only sense if the device has nodes
+    if device.nodes:
+        for (node, contens) in device.nodes.items():
+            nodes.append({
+                'count': 0,
+                'path': f"{prefix}/{node}",
+                'obj' : contens
+                })
+
+        for msg in messages:
+            for node in nodes:
+                if msg.prefix.startswith(node['path']):
+                    node['count'] += 1
+
+        for node in nodes:
+            print(f"current path: {node['path']}")
+            assert node['count'] == node_messages_count(node=node['obj'])
