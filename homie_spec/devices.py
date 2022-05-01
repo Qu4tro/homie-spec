@@ -59,7 +59,7 @@ class Device(NamedTuple):
 
         if self.nodes:
             payload_nodes = ",".join(self.nodes.keys())
-            yield msg("$nodes", payload_nodes)
+            yield msg("$nodes", payload_nodes.lower())
 
             for node_name, node in self.nodes.items():
                 node_prefix = "/".join((prefix, node_name))
