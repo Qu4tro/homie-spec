@@ -85,12 +85,13 @@ def node_messages_count(node: Node) -> int:
     return count
 
 
-prop_light = Property(name="Mock light", datatype=Datatype.BOOLEAN, get=None)
-prop_color = Property(name="Mock color", datatype=Datatype.COLOR, get=None)
+PROP_LIGHT = Property(name="Mock light", datatype=Datatype.BOOLEAN, get=None)
+PROP_COLOR = Property(name="Mock color", datatype=Datatype.COLOR, get=None)
+EXAMPLE_NODE_W_PROPERTIES = Node(name="Mock Node", typeOf="mock",
+                   properties={'Light':PROP_LIGHT, 'Color':PROP_COLOR})
 
 @given(nodes(), text())
-@example(node=Node(name="Mock Node", typeOf="mock",
-                   properties={'light':prop_light, 'color':prop_color}), prefix="/homie/device")
+@example(node=EXAMPLE_NODE_W_PROPERTIES, prefix="/homie/device")
 def test_property_path_inside_node(node: Node, prefix:str) -> None:
     """check if the node porperties have the correct path
 
@@ -118,3 +119,14 @@ def test_property_path_inside_node(node: Node, prefix:str) -> None:
         for prop in props:
             print(f"current path: {prop['path']}")
             assert prop['count'] == property_message_count(prop=prop['obj'])
+
+@given(nodes(), text())
+@example(node=EXAMPLE_NODE_W_PROPERTIES, prefix="/homie/device")
+def test_properties_lowercase(node: Node, prefix:str) -> None:
+    """check if $properties are in lowercase
+    """
+    messages = list(node.messages(prefix))
+
+    for msg in messages:
+        if msg.topic.endswith('$properties') and msg.payload:
+            assert msg.payload.islower()

@@ -15,7 +15,7 @@ EXAMPLE_DEVICE = Device(id="mock", name="Mock Device")
 NODE1 = Node(name='light', typeOf='switch')
 NODE2 = Node(name='socket', typeOf='power')
 EXAMPLE_DEVICE_W_NODES = Device(id="mock", name="Mock Device",
-                                nodes={'light':NODE1, 'socket':NODE2})
+                                nodes={'Light':NODE1, 'Socket':NODE2})
 
 @given(devices())
 @example(device=EXAMPLE_DEVICE)
@@ -157,3 +157,16 @@ def test_node_path_inside_device(device: Device) -> None:
         for node in nodes:
             print(f"current path: {node['path']}")
             assert node['count'] == node_messages_count(node=node['obj'])
+
+@given(devices())
+@example(device=EXAMPLE_DEVICE_W_NODES)
+def test_nodes_lowercase(device: Device) -> None:
+    """check if $nodes are in lowercase
+    """
+    messages = list(device.messages())
+
+    for msg in messages:
+        if msg.topic.endswith('$nodes') and msg.payload:
+            assert msg.payload.islower()
+            #device.messages has only one $nodes topic
+            break

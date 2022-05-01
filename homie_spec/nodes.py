@@ -28,7 +28,8 @@ class Node(NamedTuple):
         yield msg("$type", self.typeOf)
 
         if self.properties:
-            yield msg("$properties", ",".join(self.properties.keys()))
+            payload_properties = ",".join(self.properties.keys())
+            yield msg("$properties", payload_properties.lower())
 
             for property_name, property_ in self.properties.items():
                 prop_prefix = "/".join((prefix, property_name))
