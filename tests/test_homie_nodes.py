@@ -1,14 +1,17 @@
 "Node testing module"
 
-from hypothesis import given, example
+from hypothesis import example, given
 from hypothesis.strategies import text
 
 from homie_spec.nodes import Node
 from homie_spec.properties import Datatype, Property
 
-from .generic import nodes
 from .common import MessagesAssert
-from .test_homie_properties import test_generic_property_messages, property_message_count
+from .generic import nodes
+from .test_homie_properties import (
+    property_message_count,
+    test_generic_property_messages,
+)
 
 
 @given(nodes(), text())
@@ -87,12 +90,16 @@ def node_messages_count(node: Node) -> int:
 
 PROP_LIGHT = Property(name="Mock light", datatype=Datatype.BOOLEAN, get=None)
 PROP_COLOR = Property(name="Mock color", datatype=Datatype.COLOR, get=None)
-EXAMPLE_NODE_W_PROPERTIES = Node(name="Mock Node", typeOf="mock",
-                   properties={'Light':PROP_LIGHT, 'Color':PROP_COLOR})
+EXAMPLE_NODE_W_PROPERTIES = Node(
+    name="Mock Node",
+    typeOf="mock",
+    properties={"Light": PROP_LIGHT, "Color": PROP_COLOR},
+)
+
 
 @given(nodes(), text())
 @example(node=EXAMPLE_NODE_W_PROPERTIES, prefix="/homie/device")
-def test_property_path_inside_node(node: Node, prefix:str) -> None:
+def test_property_path_inside_node(node: Node, prefix: str) -> None:
     """check if the node porperties have the correct path
 
     expects a certain amount of messages
@@ -102,31 +109,27 @@ def test_property_path_inside_node(node: Node, prefix:str) -> None:
     messages = list(node.messages(prefix))
 
     props = []
-    #this test makes only sense if the node has properties
+    # this test makes only sense if the node has properties
     if node.properties:
         for (prop, contents) in node.properties.items():
-            props.append({
-                'count' : 0,
-                'path' : f"{prefix}/{prop}",
-                'obj' : contents
-                })
+            props.append({"count": 0, "path": f"{prefix}/{prop}", "obj": contents})
 
         for msg in messages:
             for prop in props:
-                if msg.prefix.startswith(prop['path']):
-                    prop['count'] += 1
+                if msg.prefix.startswith(prop["path"]):
+                    prop["count"] += 1
 
         for prop in props:
             print(f"current path: {prop['path']}")
-            assert prop['count'] == property_message_count(prop=prop['obj'])
+            assert prop["count"] == property_message_count(prop=prop["obj"])
+
 
 @given(nodes(), text())
 @example(node=EXAMPLE_NODE_W_PROPERTIES, prefix="/homie/device")
-def test_properties_lowercase(node: Node, prefix:str) -> None:
-    """check if $properties are in lowercase
-    """
+def test_properties_lowercase(node: Node, prefix: str) -> None:
+    """check if $properties are in lowercase"""
     messages = list(node.messages(prefix))
 
     for msg in messages:
-        if msg.topic.endswith('$properties') and msg.payload:
+        if msg.topic.endswith("$properties") and msg.payload:
             assert msg.payload.islower()

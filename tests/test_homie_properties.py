@@ -1,12 +1,17 @@
 "Property testing module"
 
-from hypothesis import given, example
+from hypothesis import example, given
 from hypothesis.strategies import text
 
-from homie_spec.properties import Datatype, Property, BooleanProperty, PercentageProperty
+from homie_spec.properties import (
+    BooleanProperty,
+    Datatype,
+    PercentageProperty,
+    Property,
+)
 
-from .generic import properties, boolean_properties, percentage_properties
 from .common import MessagesAssert
+from .generic import boolean_properties, percentage_properties, properties
 
 
 @given(properties(), text())
@@ -101,9 +106,7 @@ def test_generic_property_messages(prop: Property, prefix: str) -> None:
 )
 def test_generic_boolean_properties(prop: Property, prefix: str) -> None:
     "Use test_generic_property_messages to test BooleanProperty"
-    test_generic_property_messages.hypothesis.inner_test(  # type: ignore
-        prop, prefix
-    )
+    test_generic_property_messages.hypothesis.inner_test(prop, prefix)  # type: ignore
 
 
 @given(percentage_properties(), text())
@@ -113,9 +116,7 @@ def test_generic_boolean_properties(prop: Property, prefix: str) -> None:
 )
 def test_generic_percentage_properties(prop: Property, prefix: str) -> None:
     "Use test_generic_property_messages to test PercentageProperty"
-    test_generic_property_messages.hypothesis.inner_test(  # type: ignore
-        prop, prefix
-    )
+    test_generic_property_messages.hypothesis.inner_test(prop, prefix)  # type: ignore
 
 
 def property_message_count(prop: Property) -> int:

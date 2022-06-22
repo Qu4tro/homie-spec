@@ -1,12 +1,12 @@
 "Exposes the Device class and DeviceState"
 
 from enum import Enum, auto
-from typing import NamedTuple, Optional, Mapping, Iterator
 from functools import partial
+from typing import Iterator, Mapping, NamedTuple, Optional
 
 from homie_spec.messages import Message
-from homie_spec.properties import Property
 from homie_spec.nodes import Node
+from homie_spec.properties import Property
 
 HOMIE_VERSION: str = "4.0.0"  # The implemented Homie convention version
 

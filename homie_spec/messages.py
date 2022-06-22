@@ -2,7 +2,7 @@
 Exposes the Message class, that can be used to create MQTT styled messages.
 """
 
-from typing import NamedTuple, Union, Mapping, Optional
+from typing import Mapping, NamedTuple, Optional, Union
 
 
 class Message(NamedTuple):

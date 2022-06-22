@@ -1,7 +1,7 @@
 "Exposes the Node class"
 
-from typing import NamedTuple, Any, Mapping, Optional, Iterable
 from functools import partial
+from typing import Any, Iterable, Mapping, NamedTuple, Optional
 
 from homie_spec.messages import Message
 
@@ -88,4 +88,6 @@ class Node(NamedTuple):
 
 Node.name.__doc__ = "Friendly name of the node."
 Node.typeOf.__doc__ = "Type of the node."
-Node.properties.__doc__ = "Properties the node exposes, separated by , for multiple ones."
+Node.properties.__doc__ = (
+    "Properties the node exposes, separated by , for multiple ones."
+)

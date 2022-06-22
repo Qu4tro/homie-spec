@@ -3,8 +3,8 @@
 import os
 from datetime import timedelta
 
-from hypothesis import settings
 import pytest  # type: ignore
+from hypothesis import settings
 
 
 @pytest.fixture(scope="session", autouse=True)

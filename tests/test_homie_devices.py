@@ -1,21 +1,22 @@
 "Device testing module"
 
-from hypothesis import given, example
+from hypothesis import example, given
 
-from homie_spec.devices import Device, HOMIE_VERSION
+from homie_spec.devices import HOMIE_VERSION, Device
 from homie_spec.nodes import Node
 
-from .generic import devices
 from .common import MessagesAssert
-from .test_homie_nodes import test_generic_node_messages, node_messages_count
-
+from .generic import devices
+from .test_homie_nodes import node_messages_count, test_generic_node_messages
 
 EXAMPLE_DEVICE = Device(id="mock", name="Mock Device")
 
-NODE1 = Node(name='light', typeOf='switch')
-NODE2 = Node(name='socket', typeOf='power')
-EXAMPLE_DEVICE_W_NODES = Device(id="mock", name="Mock Device",
-                                nodes={'Light':NODE1, 'Socket':NODE2})
+NODE1 = Node(name="light", typeOf="switch")
+NODE2 = Node(name="socket", typeOf="power")
+EXAMPLE_DEVICE_W_NODES = Device(
+    id="mock", name="Mock Device", nodes={"Light": NODE1, "Socket": NODE2}
+)
+
 
 @given(devices())
 @example(device=EXAMPLE_DEVICE)
@@ -53,7 +54,9 @@ def test_device_messages(device: Device) -> None:
 
         if device.nodes:
             for node in device.nodes:
-                assert msg.exists(topic_parts=[prefix, "$nodes"], matches_substring=node)
+                assert msg.exists(
+                    topic_parts=[prefix, "$nodes"], matches_substring=node
+                )
         else:
             assert msg.exists(topic_parts=[prefix, "$nodes"], exact_payload="")
 
@@ -103,9 +106,7 @@ def test_device_messages(device: Device) -> None:
 
     def nodes_valid() -> None:
         "Call test_generic_node_messages to test children nodes"
-        check_property = (
-            test_generic_node_messages.hypothesis.inner_test  # type: ignore
-        )
+        check_property = test_generic_node_messages.hypothesis.inner_test  # type: ignore
         if device.nodes:
             for node in device.nodes.values():
                 check_property(node, prefix)
@@ -128,6 +129,7 @@ def number_of_messages_for_device(device: Device) -> int:
         count += sum(node_messages_count(node) for node in device.nodes.values())
     return count
 
+
 @given(devices())
 @example(device=EXAMPLE_DEVICE_W_NODES)
 def test_node_path_inside_device(device: Device) -> None:
@@ -136,37 +138,33 @@ def test_node_path_inside_device(device: Device) -> None:
     expects a certain amount of messages
     for the path of the given nodes
     """
-    prefix = (device.prefix + "/" + device.id)
+    prefix = device.prefix + "/" + device.id
     messages = list(device.messages())
 
     nodes = []
-    #this test makes only sense if the device has nodes
+    # this test makes only sense if the device has nodes
     if device.nodes:
         for (node, contens) in device.nodes.items():
-            nodes.append({
-                'count': 0,
-                'path': f"{prefix}/{node}",
-                'obj' : contens
-                })
+            nodes.append({"count": 0, "path": f"{prefix}/{node}", "obj": contens})
 
         for msg in messages:
             for node in nodes:
-                if msg.prefix.startswith(node['path']):
-                    node['count'] += 1
+                if msg.prefix.startswith(node["path"]):
+                    node["count"] += 1
 
         for node in nodes:
             print(f"current path: {node['path']}")
-            assert node['count'] == node_messages_count(node=node['obj'])
+            assert node["count"] == node_messages_count(node=node["obj"])
+
 
 @given(devices())
 @example(device=EXAMPLE_DEVICE_W_NODES)
 def test_nodes_lowercase(device: Device) -> None:
-    """check if $nodes are in lowercase
-    """
+    """check if $nodes are in lowercase"""
     messages = list(device.messages())
 
     for msg in messages:
-        if msg.topic.endswith('$nodes') and msg.payload:
+        if msg.topic.endswith("$nodes") and msg.payload:
             assert msg.payload.islower()
-            #device.messages has only one $nodes topic
+            # device.messages has only one $nodes topic
             break

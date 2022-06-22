@@ -1,31 +1,30 @@
 "Module that contains module-specific hypothesis-strategies for object creation"
 
-from typing import Callable, Any
+from typing import Any, Callable
 
 from hypothesis.strategies import (
+    SearchStrategy,
     booleans,
     composite,
     dictionaries,
     functions,
     integers,
+    one_of,
     sampled_from,
     shared,
     text,
     uuids,
-    one_of,
-    SearchStrategy,
 )
 
-from homie_spec.nodes import Node
 from homie_spec.devices import Device
+from homie_spec.nodes import Node
 from homie_spec.properties import (
-    Property,
-    BooleanProperty,
-    PercentageProperty,
-    Datatype,
     RECOMMENDED_UNITS,
+    BooleanProperty,
+    Datatype,
+    PercentageProperty,
+    Property,
 )
-
 
 Drawable = Callable[[SearchStrategy[Any]], Any]  # pylint: disable=invalid-name
 
@@ -70,7 +69,9 @@ def percentage_properties(draw: Drawable) -> Property:
         get=draw(
             functions(
                 like=lambda: "4",
-                returns=shared(integers(min_value=0, max_value=100).map(str), key="key"),
+                returns=shared(
+                    integers(min_value=0, max_value=100).map(str), key="key"
+                ),
             )
         ),
         retained=draw(booleans()),
