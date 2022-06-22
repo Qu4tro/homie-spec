@@ -31,15 +31,17 @@ pytest-pylint = "^0.14.1"
 hypothesis = "^5.0.0"
 
 [tool.black]
-line-length = 90
-target-version = ['py36', 'py37', 'py38']
+target-version = ['py37', 'py38', 'py39', 'py310']
+
+[tool.isort]
+profile = "black"
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-envlist = py36,py37,py38
- 
+envlist = py37,py38,py39,py310
+
 [testenv]
 passenv = TOXENV CI TRAVIS TRAVIS_* CODECOV_*
 whitelist_externals = poetry
@@ -48,6 +50,14 @@ commands =
   poetry run pytest --mypy --pylint --black --doctest-modules --cov=homie_spec {posargs}
   codecov -e TOXENV
 """
+
+[tool.mypy]
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_return_any = true
+warn_unreachable = true
 
 [tool.coverage.run]
 branch = true
