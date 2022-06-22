@@ -1,0 +1,44 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.2.0
+    hooks:
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+      - id: check-builtin-literals
+      - id: check-case-conflict
+      - id: check-docstring-first
+        exclude: ^example.py
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-xml
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: pretty-format-json
+        args: [--autofix, --indent=2]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: '4.0.1'
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/pycqa/isort
+    rev: '5.10.1'
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/python/black
+    rev: '22.3.0'
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'v0.961'
+    hooks:
+      - id: mypy

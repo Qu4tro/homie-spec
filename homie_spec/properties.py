@@ -3,8 +3,8 @@ Exposes the Property class, Datatype and multiple partial constructors
 """
 
 from enum import Enum, auto
-from typing import NamedTuple, Callable, Optional, Iterable
 from functools import partial
+from typing import Callable, Iterable, NamedTuple, Optional
 
 from homie_spec.messages import Message
 
@@ -138,7 +138,9 @@ Property.datatype.__doc__ = "The property's datatype."
 Property.formatOf.__doc__ = "Specifies restrictions or options for the given data type"
 Property.settable.__doc__ = "Settable (true). Default is read-only (false)"
 Property.retained.__doc__ = "Non-retained (false). The spec Default is Retained (true)."
-Property.unit.__doc__ = "Optional unit of this property. Should follow a accepted value."
+Property.unit.__doc__ = (
+    "Optional unit of this property. Should follow a accepted value."
+)
 
 
 RECOMMENDED_UNITS = [
